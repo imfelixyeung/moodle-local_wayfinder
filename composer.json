@@ -1,0 +1,12 @@
+{
+    "name": "imfelixyeung/wayfinder",
+    "authors": [
+        {
+            "name": "Felix Yeung",
+            "email": "me@felixyeung.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.3"
+    }
+}
