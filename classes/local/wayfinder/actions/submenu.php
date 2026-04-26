@@ -14,44 +14,42 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_wayfinder\local\wayfinder\items\core;
+namespace local_wayfinder\local\wayfinder\actions;
 
-use core\lang_string;
 use local_wayfinder\local\wayfinder\action;
-use local_wayfinder\local\wayfinder\actions\submenu;
 use local_wayfinder\local\wayfinder\item;
-use local_wayfinder\local\wayfinder\items\core\language\option;
-use function count;
 
 /**
- * Switch language.
+ * Submenu action.
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class language extends item {
-    #[\Override]
-    public function get_name(): lang_string {
-        return new lang_string('language');
+class submenu extends action {
+    /**
+     * Array of items to display.
+     * @var array
+     */
+    protected array $items;
+
+    /**
+     * Constrictor.
+     * @param item[] $items
+     */
+    public function __construct(array $items) {
+        $this->items = $items;
     }
 
     #[\Override]
-    public function check_access(): bool {
-        $langs = get_string_manager()->get_list_of_translations();
-        return count($langs) >= 2;
+    protected static function get_id(): string {
+        return 'submenu';
     }
 
     #[\Override]
-    public function get_action(): ?action {
-        $langs = get_string_manager()->get_list_of_translations();
-        unset($langs[current_language()]);
-        if (!$langs) {
-            return null;
-        }
-
-        $keys = array_keys($langs);
-        $items = array_map(fn($key) => new option($this->renderer, $key), $keys);
-        return new submenu($items);
+    public function jsonSerialize() {
+        $json = parent::jsonSerialize();
+        $json['items'] = $this->items;
+        return $json;
     }
 }

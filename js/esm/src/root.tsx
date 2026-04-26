@@ -13,7 +13,12 @@ type RedirectAction = {
     url: string;
 };
 
-type Action = UnknownAction | RedirectAction;
+type SubmenuAction = {
+    id: "submenu";
+    items: Item[];
+};
+
+type Action = UnknownAction | RedirectAction | SubmenuAction;
 
 type Item = {
     name: string;
@@ -28,6 +33,7 @@ type Props = {
 };
 
 export default function Wayfinder(props: Props) {
+    const [items, setItems] = React.useState(() => props.list);
     const [open, setOpen] = React.useState(false);
     const openPalette = () => setOpen(true);
     useHotkey("Control+K", openPalette);
@@ -48,7 +54,19 @@ export default function Wayfinder(props: Props) {
             return;
         }
 
+        if (action.id === "submenu") {
+            setItems(action.items);
+            return;
+        }
+
         action satisfies never;
+    };
+
+    const onDialogOpenChange = (open: boolean) => {
+        setOpen(open);
+        if (!open) {
+            setItems(props.list);
+        }
     };
 
     return (
@@ -61,7 +79,7 @@ export default function Wayfinder(props: Props) {
             />
             <Command.Dialog
                 open={open}
-                onOpenChange={setOpen}
+                onOpenChange={onDialogOpenChange}
                 label={props.strings["cmdk:dialog:label"]}
                 overlayClassName="wayfinder-overlay"
                 contentClassName="wayfinder-content"
@@ -75,7 +93,7 @@ export default function Wayfinder(props: Props) {
                         {props.strings["cmdk:results:empty"]}
                     </Command.Empty>
 
-                    {props.list.map((item, index) => (
+                    {items.map((item, index) => (
                         <Command.Item
                             key={index}
                             onSelect={onItemSelected.bind(null, item)}

@@ -14,44 +14,47 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_wayfinder\local\wayfinder\items\core;
+namespace local_wayfinder\local\wayfinder\items\core\language;
 
 use core\lang_string;
+use core\url;
 use local_wayfinder\local\wayfinder\action;
-use local_wayfinder\local\wayfinder\actions\submenu;
+use local_wayfinder\local\wayfinder\actions\redirect;
 use local_wayfinder\local\wayfinder\item;
-use local_wayfinder\local\wayfinder\items\core\language\option;
-use function count;
+use local_wayfinder\output\renderer;
 
 /**
- * Switch language.
+ * Switch to a specific language.
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class language extends item {
-    #[\Override]
-    public function get_name(): lang_string {
-        return new lang_string('language');
+class option extends item {
+    /** @var string */
+    private string $lang;
+
+    /**
+     * Constructor.
+     * @param renderer $renderer
+     */
+    public function __construct(renderer $renderer, string $lang) {
+        parent::__construct($renderer);
+        $this->lang = $lang;
     }
 
     #[\Override]
-    public function check_access(): bool {
-        $langs = get_string_manager()->get_list_of_translations();
-        return count($langs) >= 2;
+    public function get_name(): lang_string {
+        return new lang_string('thislanguage', 'langconfig', lang: $this->lang);
+    }
+
+    #[\Override]
+    public function get_description(): lang_string {
+        return new lang_string('thislanguageint', 'langconfig', lang: $this->lang);
     }
 
     #[\Override]
     public function get_action(): ?action {
-        $langs = get_string_manager()->get_list_of_translations();
-        unset($langs[current_language()]);
-        if (!$langs) {
-            return null;
-        }
-
-        $keys = array_keys($langs);
-        $items = array_map(fn($key) => new option($this->renderer, $key), $keys);
-        return new submenu($items);
+        return new redirect(new url($this->renderer->get_page()->url, ['lang' => $this->lang]));
     }
 }
