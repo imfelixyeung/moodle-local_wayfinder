@@ -14,35 +14,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_wayfinder\local\wayfinder\items\grade;
+namespace local_wayfinder\local\wayfinder;
 
-use core\context\course;
-use core\lang_string;
-use core\url;
-use local_wayfinder\local\wayfinder\action;
-use local_wayfinder\local\wayfinder\actions\redirect;
-use local_wayfinder\local\wayfinder\item;
+use JsonSerializable;
 
 /**
- * Grades.
+ * Base wayfinder action.
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class grades extends item {
-    #[\Override]
-    public function get_name(): lang_string {
-        return new lang_string('grades', 'grades');
+class action implements JsonSerializable {
+    /**
+     * Action unique id.
+     * @return string
+     */
+    protected static function get_id(): string {
+        return 'unknown';
     }
 
-    #[\Override]
-    public function check_access(): bool {
-        return has_capability('moodle/grade:viewall', course::instance(SITEID));
-    }
-
-    #[\Override]
-    public function get_action(): action {
-        return new redirect(new url('/grade/report/overview/index.php'));
+    /**
+     * Serialise to json.
+     * @return array
+     */
+    public function jsonSerialize() {
+        return [
+            'id' => $this->get_id(),
+        ];
     }
 }

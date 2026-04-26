@@ -4,8 +4,21 @@ import {Command} from "cmdk";
 import {useHotkey} from "@tanstack/react-hotkeys";
 import {type RequiredLanguageStrings} from "./strings";
 
+type UnknownAction = {
+    id: "unknown";
+};
+
+type RedirectAction = {
+    id: "redirect";
+    url: string;
+};
+
+type Action = UnknownAction | RedirectAction;
+
 type Item = {
     name: string;
+    description: string | null;
+    action: Action | null;
 };
 
 type Props = {
@@ -19,6 +32,24 @@ export default function Wayfinder(props: Props) {
     const openPalette = () => setOpen(true);
     useHotkey("Control+K", openPalette);
     useHotkey("/", openPalette);
+
+    const onItemSelected = (item: Item) => {
+        const {action} = item;
+        if (!action) {
+            return;
+        }
+
+        if (action.id === "unknown") {
+            return;
+        }
+
+        if (action.id === "redirect") {
+            window.location.assign(action.url);
+            return;
+        }
+
+        action satisfies never;
+    };
 
     return (
         <>
@@ -45,7 +76,13 @@ export default function Wayfinder(props: Props) {
                     </Command.Empty>
 
                     {props.list.map((item, index) => (
-                        <Command.Item key={index}>{item.name}</Command.Item>
+                        <Command.Item
+                            key={index}
+                            onSelect={onItemSelected.bind(null, item)}
+                            disabled={!item.action}
+                        >
+                            {item.name}
+                        </Command.Item>
                     ))}
                 </Command.List>
             </Command.Dialog>

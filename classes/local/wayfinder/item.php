@@ -52,13 +52,22 @@ class item implements JsonSerializable {
     }
 
     /**
+     * Gets the action of the item.
+     * @return ?action
+     */
+    public function get_action(): ?action {
+        return null;
+    }
+
+    /**
      * Serialise to json.
      * @return array
      */
     public function jsonSerialize() {
         return [
             'name' => (string) $this->get_name(),
-            'description' => (string) $this->get_description(),
+            'description' => $this->get_description()?->out(),
+            'action' => $this->get_action(),
         ];
     }
 }

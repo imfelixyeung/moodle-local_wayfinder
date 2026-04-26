@@ -17,6 +17,9 @@
 namespace local_wayfinder\local\wayfinder\items\user;
 
 use core\lang_string;
+use core\url;
+use local_wayfinder\local\wayfinder\action;
+use local_wayfinder\local\wayfinder\actions\redirect;
 use local_wayfinder\local\wayfinder\item;
 
 /**
@@ -35,5 +38,10 @@ class profile extends item {
     #[\Override]
     public function check_access(): bool {
         return isloggedin();
+    }
+
+    #[\Override]
+    public function get_action(): action {
+        return new redirect(new url('/user/profile.php'));
     }
 }

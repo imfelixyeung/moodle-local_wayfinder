@@ -18,6 +18,9 @@ namespace local_wayfinder\local\wayfinder\items\course;
 
 use core\context\course;
 use core\lang_string;
+use core\url;
+use local_wayfinder\local\wayfinder\action;
+use local_wayfinder\local\wayfinder\actions\redirect;
 use local_wayfinder\local\wayfinder\item;
 
 /**
@@ -36,5 +39,10 @@ class switchrole extends item {
     #[\Override]
     public function check_access(): bool {
         return has_capability('moodle/role:switchroles', course::instance(SITEID));
+    }
+
+    #[\Override]
+    public function get_action(): action {
+        return new redirect(new url('/course/switchrole.php', ['id' => SITEID]));
     }
 }
