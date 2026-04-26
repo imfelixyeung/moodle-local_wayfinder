@@ -48,6 +48,7 @@ class renderer extends plugin_renderer_base {
             new \local_wayfinder\local\wayfinder\items\core\language($this),
             new \local_wayfinder\local\wayfinder\items\course\switchrole($this),
             new \local_wayfinder\local\wayfinder\items\core\logout($this),
+            new \local_wayfinder\local\wayfinder\items\admin\purgecaches($this),
         ];
 
         $items = array_values(array_filter($items, fn(item $item) => $item->check_access()));
