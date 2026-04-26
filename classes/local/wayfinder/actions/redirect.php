@@ -20,7 +20,7 @@ use core\url;
 use local_wayfinder\local\wayfinder\action;
 
 /**
- * Base wayfinder action.
+ * redirect action.
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
