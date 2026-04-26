@@ -19,6 +19,7 @@ namespace local_wayfinder\output;
 use core\output\html_writer;
 use core\output\pix_icon;
 use core\output\plugin_renderer_base;
+use local_wayfinder\local\wayfinder\item;
 
 /**
  * Wayfinder renderer.
@@ -36,6 +37,21 @@ class renderer extends plugin_renderer_base {
         // Prevents layout shift with an initial skeleton before React kicks in.
         $skeleton = $this->render_from_template('local_wayfinder/skeleton', []);
 
+        /** @var item[] $items */
+        $items = [
+            new \local_wayfinder\local\wayfinder\items\user\profile(),
+            new \local_wayfinder\local\wayfinder\items\grade\grades(),
+            new \local_wayfinder\local\wayfinder\items\calendar\calendar(),
+            new \local_wayfinder\local\wayfinder\items\user\files(),
+            new \local_wayfinder\local\wayfinder\items\reportbuilder\reports(),
+            new \local_wayfinder\local\wayfinder\items\user\preferences(),
+            new \local_wayfinder\local\wayfinder\items\core\language(),
+            new \local_wayfinder\local\wayfinder\items\course\switchrole(),
+            new \local_wayfinder\local\wayfinder\items\core\logout(),
+        ];
+
+        $items = array_values(array_filter($items, fn(item $item) => $item->check_access()));
+
         return html_writer::tag(
             'wayfinder-root',
             $skeleton,
@@ -48,17 +64,7 @@ class renderer extends plugin_renderer_base {
                         'cmdk:input:placeholder' => get_string('cmdk:input:placeholder', 'local_wayfinder'),
                         'cmdk:results:empty' => get_string('cmdk:results:empty', 'local_wayfinder'),
                     ],
-                    'list' => [
-                        ['name' => get_string('profile')],
-                        ['name' => get_string('grades', 'grades')],
-                        ['name' => get_string('calendar', 'core_calendar')],
-                        ['name' => get_string('privatefiles')],
-                        ['name' => get_string('reports', 'core_reportbuilder')],
-                        ['name' => get_string('preferences')],
-                        ['name' => get_string('language')],
-                        ['name' => get_string('switchroleto')],
-                        ['name' => get_string('logout')],
-                    ],
+                    'list' => $items,
                 ]),
             ]
         );
