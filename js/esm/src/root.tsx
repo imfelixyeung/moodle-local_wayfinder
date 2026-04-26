@@ -111,7 +111,6 @@ export default function Wayfinder(props: Props) {
                 contentClassName="wayfinder-content"
             >
                 <Command.Input
-                    className="form-control"
                     placeholder={props.strings["cmdk:input:placeholder"]}
                     value={input}
                     onValueChange={setInput}
