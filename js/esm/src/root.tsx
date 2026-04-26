@@ -115,6 +115,11 @@ export default function Wayfinder(props: Props) {
                     placeholder={props.strings["cmdk:input:placeholder"]}
                     value={input}
                     onValueChange={setInput}
+                    // Annoyingly theme/boost/amd/src/aria.js comboboxFix() messes with cmdk,
+                    // this is a hacky way to bypass the element matching,
+                    // [role="combobox"][aria-controls]:not([aria-haspopup=dialog])
+                    // but means accessibility becomes questionable.
+                    aria-haspopup="dialog"
                 />
                 <Command.List>
                     <Command.Empty>
