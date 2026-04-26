@@ -38,6 +38,9 @@ class files extends item {
 
     #[\Override]
     public function check_access(): bool {
+        if (!isloggedin()) {
+            return false;
+        }
         global $USER;
         return has_capability('moodle/user:manageownfiles', user::instance($USER->id));
     }
