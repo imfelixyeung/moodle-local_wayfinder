@@ -8,6 +8,12 @@ type UnknownAction = {
     id: "unknown";
 };
 
+type FormAction = {
+    id: "form";
+    url: string;
+    data: Record<string, string>;
+};
+
 type RedirectAction = {
     id: "redirect";
     url: string;
@@ -18,7 +24,7 @@ type SubmenuAction = {
     items: Item[];
 };
 
-type Action = UnknownAction | RedirectAction | SubmenuAction;
+type Action = UnknownAction | FormAction | RedirectAction | SubmenuAction;
 
 type Item = {
     name: string;
@@ -46,6 +52,23 @@ export default function Wayfinder(props: Props) {
         }
 
         if (action.id === "unknown") {
+            return;
+        }
+
+        if (action.id === "form") {
+            const form = document.createElement("form");
+            form.action = action.url;
+            form.method = "post";
+            form.style.display = "none";
+            for (const [key, value] of Object.entries(action.data)) {
+                const input = document.createElement("input");
+                input.name = key;
+                input.value = value;
+                form.appendChild(input);
+            }
+            document.body.appendChild(form);
+            form.submit();
+            form.remove();
             return;
         }
 
