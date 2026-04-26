@@ -21,13 +21,13 @@ use JsonSerializable;
 use local_wayfinder\output\renderer;
 
 /**
- * Base wayfinder item.
+ * Base wayfinder command.
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class item implements JsonSerializable {
+class command implements JsonSerializable {
     /**
      * Wayfinder plugin renderer.
      * @var renderer
@@ -42,7 +42,7 @@ class item implements JsonSerializable {
     }
 
     /**
-     * Gets the name of the item.
+     * Gets the name of the command.
      * @return lang_string
      */
     public function get_name(): lang_string {
@@ -50,7 +50,7 @@ class item implements JsonSerializable {
     }
 
     /**
-     * Gets the description of the item.
+     * Gets the description of the command.
      * @return lang_string|null
      */
     public function get_description(): ?lang_string {
@@ -58,7 +58,7 @@ class item implements JsonSerializable {
     }
 
     /**
-     * Checks if the current user has access to the item.
+     * Checks if the current user has access to the command.
      * @return bool
      */
     public function check_access(): bool {
@@ -66,7 +66,7 @@ class item implements JsonSerializable {
     }
 
     /**
-     * Gets the action of the item.
+     * Gets the action of the command.
      * @return ?action
      */
     public function get_action(): ?action {
@@ -79,7 +79,7 @@ class item implements JsonSerializable {
      */
     public function jsonSerialize() {
         return [
-            'type' => 'item',
+            'type' => 'command',
             'name' => (string) $this->get_name(),
             'description' => $this->get_description()?->out(),
             'action' => $this->get_action(),

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import {Command} from "cmdk";
+import {Command as CommandBase} from "cmdk";
 import {useHotkey} from "@tanstack/react-hotkeys";
 import {type RequiredLanguageStrings} from "./strings";
 
@@ -30,8 +30,8 @@ type SubmenuAction = BaseAction & {
 
 type Action = UnknownAction | FormAction | RedirectAction | SubmenuAction;
 
-type Item = {
-    type: "item";
+type Command = {
+    type: "command";
     name: string;
     description: string | null;
     action: Action | null;
@@ -41,7 +41,7 @@ type Separator = {
     type: "separator";
 };
 
-type ListItem = Item | Separator;
+type ListItem = Command | Separator;
 
 type Props = {
     icon: {html: string};
@@ -57,8 +57,8 @@ export default function Wayfinder(props: Props) {
     useHotkey("Control+K", openPalette);
     useHotkey("/", openPalette);
 
-    const onItemSelected = (item: Item) => {
-        const {action} = item;
+    const onCommandSelected = (command: Command) => {
+        const {action} = command;
         if (!action) {
             return;
         }
@@ -114,14 +114,14 @@ export default function Wayfinder(props: Props) {
                 onClick={openPalette}
                 dangerouslySetInnerHTML={{__html: props.icon.html}}
             />
-            <Command.Dialog
+            <CommandBase.Dialog
                 open={open}
                 onOpenChange={onDialogOpenChange}
                 label={props.strings["cmdk:dialog:label"]}
                 overlayClassName="wayfinder-overlay"
                 contentClassName="wayfinder-content"
             >
-                <Command.Input
+                <CommandBase.Input
                     placeholder={props.strings["cmdk:input:placeholder"]}
                     value={input}
                     onValueChange={setInput}
@@ -131,27 +131,27 @@ export default function Wayfinder(props: Props) {
                     // but means accessibility becomes questionable.
                     aria-haspopup="dialog"
                 />
-                <Command.List>
-                    <Command.Empty>
+                <CommandBase.List>
+                    <CommandBase.Empty>
                         {props.strings["cmdk:results:empty"]}
-                    </Command.Empty>
+                    </CommandBase.Empty>
 
-                    {items.map((item, index) => {
+                    {items.map((command, index) => {
                         if (item.type === "separator") {
-                            return <Command.Separator key={index} />;
+                            return <CommandBase.Separator key={index} />;
                         }
                         return (
-                            <Command.Item
+                            <CommandBase.Item
                                 key={index}
-                                onSelect={onItemSelected.bind(null, item)}
+                                onSelect={onCommandSelected.bind(null, item)}
                                 disabled={!item.action}
                             >
                                 {item.name}
-                            </Command.Item>
+                            </CommandBase.Item>
                         );
                     })}
-                </Command.List>
-            </Command.Dialog>
+                </CommandBase.List>
+            </CommandBase.Dialog>
         </>
     );
 }

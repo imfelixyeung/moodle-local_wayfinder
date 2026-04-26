@@ -14,13 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_wayfinder\local\wayfinder\items\admin\purgecaches;
+namespace local_wayfinder\local\wayfinder\commands\admin\purgecaches;
 
 use core\lang_string;
 use core\url;
 use local_wayfinder\local\wayfinder\action;
 use local_wayfinder\local\wayfinder\actions\form;
-use local_wayfinder\local\wayfinder\item;
+use local_wayfinder\local\wayfinder\command;
 use local_wayfinder\output\renderer;
 
 /**
@@ -30,7 +30,7 @@ use local_wayfinder\output\renderer;
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class option extends item {
+class option extends command {
     /** @var string|null */
     private ?string $cache;
 

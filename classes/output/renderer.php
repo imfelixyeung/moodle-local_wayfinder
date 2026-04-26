@@ -19,7 +19,7 @@ namespace local_wayfinder\output;
 use core\output\html_writer;
 use core\output\pix_icon;
 use core\output\plugin_renderer_base;
-use local_wayfinder\local\wayfinder\item;
+use local_wayfinder\local\wayfinder\command;
 
 /**
  * Wayfinder renderer.
@@ -37,21 +37,21 @@ class renderer extends plugin_renderer_base {
         // Prevents layout shift with an initial skeleton before React kicks in.
         $skeleton = $this->render_from_template('local_wayfinder/skeleton', []);
 
-        /** @var item[] $items */
+        /** @var command[] $items */
         $items = [
-            new \local_wayfinder\local\wayfinder\items\user\profile($this),
-            new \local_wayfinder\local\wayfinder\items\grade\grades($this),
-            new \local_wayfinder\local\wayfinder\items\calendar\calendar($this),
-            new \local_wayfinder\local\wayfinder\items\user\files($this),
-            new \local_wayfinder\local\wayfinder\items\reportbuilder\reports($this),
-            new \local_wayfinder\local\wayfinder\items\user\preferences($this),
-            new \local_wayfinder\local\wayfinder\items\core\language($this),
-            new \local_wayfinder\local\wayfinder\items\course\switchrole($this),
-            new \local_wayfinder\local\wayfinder\items\core\logout($this),
-            new \local_wayfinder\local\wayfinder\items\admin\purgecaches($this),
+            new \local_wayfinder\local\wayfinder\commands\user\profile($this),
+            new \local_wayfinder\local\wayfinder\commands\grade\grades($this),
+            new \local_wayfinder\local\wayfinder\commands\calendar\calendar($this),
+            new \local_wayfinder\local\wayfinder\commands\user\files($this),
+            new \local_wayfinder\local\wayfinder\commands\reportbuilder\reports($this),
+            new \local_wayfinder\local\wayfinder\commands\user\preferences($this),
+            new \local_wayfinder\local\wayfinder\commands\core\language($this),
+            new \local_wayfinder\local\wayfinder\commands\course\switchrole($this),
+            new \local_wayfinder\local\wayfinder\commands\core\logout($this),
+            new \local_wayfinder\local\wayfinder\commands\admin\purgecaches($this),
         ];
 
-        $items = array_values(array_filter($items, fn(item $item) => $item->check_access()));
+        $items = array_values(array_filter($items, fn(command $item) => $item->check_access()));
 
         return html_writer::tag(
             'wayfinder-root',

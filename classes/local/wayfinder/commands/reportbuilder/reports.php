@@ -14,34 +14,34 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_wayfinder\local\wayfinder\items\core;
+namespace local_wayfinder\local\wayfinder\commands\reportbuilder;
 
 use core\lang_string;
 use core\url;
 use local_wayfinder\local\wayfinder\action;
 use local_wayfinder\local\wayfinder\actions\redirect;
-use local_wayfinder\local\wayfinder\item;
+use local_wayfinder\local\wayfinder\command;
 
 /**
- * Logout.
+ * Report builder reports.
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class logout extends item {
+class reports extends command {
     #[\Override]
     public function get_name(): lang_string {
-        return new lang_string('logout');
+        return new lang_string('reports', 'core_reportbuilder');
     }
 
     #[\Override]
     public function check_access(): bool {
-        return isloggedin();
+        return \core_reportbuilder\permission::can_view_reports_list();
     }
 
     #[\Override]
     public function get_action(): action {
-        return new redirect(new url('/login/logout.php', ['sesskey' => sesskey()]));
+        return new redirect(new url('/reportbuilder/index.php'));
     }
 }

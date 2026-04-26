@@ -14,35 +14,34 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_wayfinder\local\wayfinder\items\grade;
+namespace local_wayfinder\local\wayfinder\commands\core;
 
-use core\context\course;
 use core\lang_string;
 use core\url;
 use local_wayfinder\local\wayfinder\action;
 use local_wayfinder\local\wayfinder\actions\redirect;
-use local_wayfinder\local\wayfinder\item;
+use local_wayfinder\local\wayfinder\command;
 
 /**
- * Grades.
+ * Logout.
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class grades extends item {
+class logout extends command {
     #[\Override]
     public function get_name(): lang_string {
-        return new lang_string('grades', 'grades');
+        return new lang_string('logout');
     }
 
     #[\Override]
     public function check_access(): bool {
-        return has_capability('moodle/grade:viewall', course::instance(SITEID));
+        return isloggedin();
     }
 
     #[\Override]
     public function get_action(): action {
-        return new redirect(new url('/grade/report/overview/index.php'));
+        return new redirect(new url('/login/logout.php', ['sesskey' => sesskey()]));
     }
 }

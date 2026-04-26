@@ -14,34 +14,44 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_wayfinder\local\wayfinder\items\calendar;
+namespace local_wayfinder\local\wayfinder\commands\core;
 
 use core\lang_string;
-use core\url;
 use local_wayfinder\local\wayfinder\action;
-use local_wayfinder\local\wayfinder\actions\redirect;
-use local_wayfinder\local\wayfinder\item;
+use local_wayfinder\local\wayfinder\actions\submenu;
+use local_wayfinder\local\wayfinder\command;
+use local_wayfinder\local\wayfinder\commands\core\language\option;
+use function count;
 
 /**
- * Calendar.
+ * Switch language.
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class calendar extends item {
+class language extends command {
     #[\Override]
     public function get_name(): lang_string {
-        return new lang_string('calendar', 'core_calendar');
+        return new lang_string('language');
     }
 
     #[\Override]
     public function check_access(): bool {
-        return isloggedin();
+        $langs = get_string_manager()->get_list_of_translations();
+        return count($langs) >= 2;
     }
 
     #[\Override]
-    public function get_action(): action {
-        return new redirect(new url('/calendar/view.php'));
+    public function get_action(): ?action {
+        $langs = get_string_manager()->get_list_of_translations();
+        unset($langs[current_language()]);
+        if (!$langs) {
+            return null;
+        }
+
+        $keys = array_keys($langs);
+        $items = array_map(fn($key) => new option($this->renderer, $key), $keys);
+        return new submenu($items);
     }
 }

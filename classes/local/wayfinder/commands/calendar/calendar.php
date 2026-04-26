@@ -14,42 +14,34 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_wayfinder\local\wayfinder\items\admin;
+namespace local_wayfinder\local\wayfinder\commands\calendar;
 
-use core\context\system;
 use core\lang_string;
+use core\url;
 use local_wayfinder\local\wayfinder\action;
-use local_wayfinder\local\wayfinder\actions\submenu;
-use local_wayfinder\local\wayfinder\item;
-use local_wayfinder\local\wayfinder\items\admin\purgecaches\option;
-use local_wayfinder\local\wayfinder\separator;
+use local_wayfinder\local\wayfinder\actions\redirect;
+use local_wayfinder\local\wayfinder\command;
 
 /**
- * Purge cache.
+ * Calendar.
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class purgecaches extends item {
+class calendar extends command {
     #[\Override]
     public function get_name(): lang_string {
-        return new lang_string('purgecachespage', 'admin');
+        return new lang_string('calendar', 'core_calendar');
     }
 
     #[\Override]
     public function check_access(): bool {
-        return has_capability('moodle/site:config', system::instance());
+        return isloggedin();
     }
 
     #[\Override]
-    public function get_action(): ?action {
-        $caches = ['theme', 'courses', 'lang', 'js', 'template', 'filter', 'muc', 'other'];
-        $items = [
-            new option($this->renderer, null),
-            new separator(),
-            ...array_map(fn(?string $cache) => new option($this->renderer, $cache), $caches),
-        ];
-        return new submenu($items);
+    public function get_action(): action {
+        return new redirect(new url('/calendar/view.php'));
     }
 }

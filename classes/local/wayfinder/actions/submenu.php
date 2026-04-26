@@ -17,7 +17,7 @@
 namespace local_wayfinder\local\wayfinder\actions;
 
 use local_wayfinder\local\wayfinder\action;
-use local_wayfinder\local\wayfinder\item;
+use local_wayfinder\local\wayfinder\command;
 use local_wayfinder\local\wayfinder\separator;
 
 /**
@@ -36,7 +36,7 @@ class submenu extends action {
 
     /**
      * Constrictor.
-     * @param (item|separator)[] $items
+     * @param (command|separator)[] $items
      */
     public function __construct(array $items) {
         $this->items = $items;
