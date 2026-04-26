@@ -41,6 +41,7 @@ type Props = {
 export default function Wayfinder(props: Props) {
     const [items, setItems] = React.useState(() => props.list);
     const [open, setOpen] = React.useState(false);
+    const [input, setInput] = React.useState("");
     const openPalette = () => setOpen(true);
     useHotkey("Control+K", openPalette);
     useHotkey("/", openPalette);
@@ -79,6 +80,7 @@ export default function Wayfinder(props: Props) {
 
         if (action.id === "submenu") {
             setItems(action.items);
+            setInput("");
             return;
         }
 
@@ -89,6 +91,7 @@ export default function Wayfinder(props: Props) {
         setOpen(open);
         if (!open) {
             setItems(props.list);
+            setInput("");
         }
     };
 
@@ -110,6 +113,8 @@ export default function Wayfinder(props: Props) {
                 <Command.Input
                     className="form-control"
                     placeholder={props.strings["cmdk:input:placeholder"]}
+                    value={input}
+                    onValueChange={setInput}
                 />
                 <Command.List>
                     <Command.Empty>
