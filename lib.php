@@ -22,6 +22,7 @@
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use core\output\pix_icon;
 use core\output\renderer_base;
 
 /**
@@ -30,5 +31,33 @@ use core\output\renderer_base;
  * @return string
  */
 function local_wayfinder_render_navbar_output(renderer_base $renderer) {
-    return html_writer::tag('wayfinder-root', '', ['data-react-component' => '@moodle/lms/local_wayfinder/root']);
+    // Prevents layout shift with an initial skeleton before React kicks in.
+    $skeleton = $renderer->render_from_template('local_wayfinder/skeleton', []);
+
+    return html_writer::tag(
+        'wayfinder-root',
+        $skeleton,
+        [
+            'data-react-component' => '@moodle/lms/local_wayfinder/root',
+            'data-react-props' => json_encode([
+                'icon' => ['html' => $renderer->render(new pix_icon('a/search', get_string('search')))],
+                'strings' => [
+                    'cmdk:dialog:label' => get_string('cmdk:dialog:label', 'local_wayfinder'),
+                    'cmdk:input:placeholder' => get_string('cmdk:input:placeholder', 'local_wayfinder'),
+                    'cmdk:results:empty' => get_string('cmdk:results:empty', 'local_wayfinder'),
+                ],
+                'list' => [
+                    ['name' => get_string('profile')],
+                    ['name' => get_string('grades', 'grades')],
+                    ['name' => get_string('calendar', 'core_calendar')],
+                    ['name' => get_string('privatefiles')],
+                    ['name' => get_string('reports', 'core_reportbuilder')],
+                    ['name' => get_string('preferences')],
+                    ['name' => get_string('language')],
+                    ['name' => get_string('switchroleto')],
+                    ['name' => get_string('logout')],
+                ],
+            ]),
+        ]
+    );
 }
