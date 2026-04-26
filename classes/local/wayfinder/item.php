@@ -18,6 +18,7 @@ namespace local_wayfinder\local\wayfinder;
 
 use core\lang_string;
 use JsonSerializable;
+use local_wayfinder\output\renderer;
 
 /**
  * Base wayfinder item.
@@ -27,6 +28,19 @@ use JsonSerializable;
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class item implements JsonSerializable {
+    /**
+     * Wayfinder plugin renderer.
+     * @var renderer
+     */
+    protected renderer $renderer;
+
+    /**
+     * Constructor.
+     */
+    public function __construct(renderer $renderer) {
+        $this->renderer = $renderer;
+    }
+
     /**
      * Gets the name of the item.
      * @return lang_string

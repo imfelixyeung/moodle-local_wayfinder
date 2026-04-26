@@ -39,15 +39,15 @@ class renderer extends plugin_renderer_base {
 
         /** @var item[] $items */
         $items = [
-            new \local_wayfinder\local\wayfinder\items\user\profile(),
-            new \local_wayfinder\local\wayfinder\items\grade\grades(),
-            new \local_wayfinder\local\wayfinder\items\calendar\calendar(),
-            new \local_wayfinder\local\wayfinder\items\user\files(),
-            new \local_wayfinder\local\wayfinder\items\reportbuilder\reports(),
-            new \local_wayfinder\local\wayfinder\items\user\preferences(),
-            new \local_wayfinder\local\wayfinder\items\core\language(),
-            new \local_wayfinder\local\wayfinder\items\course\switchrole(),
-            new \local_wayfinder\local\wayfinder\items\core\logout(),
+            new \local_wayfinder\local\wayfinder\items\user\profile($this),
+            new \local_wayfinder\local\wayfinder\items\grade\grades($this),
+            new \local_wayfinder\local\wayfinder\items\calendar\calendar($this),
+            new \local_wayfinder\local\wayfinder\items\user\files($this),
+            new \local_wayfinder\local\wayfinder\items\reportbuilder\reports($this),
+            new \local_wayfinder\local\wayfinder\items\user\preferences($this),
+            new \local_wayfinder\local\wayfinder\items\core\language($this),
+            new \local_wayfinder\local\wayfinder\items\course\switchrole($this),
+            new \local_wayfinder\local\wayfinder\items\core\logout($this),
         ];
 
         $items = array_values(array_filter($items, fn(item $item) => $item->check_access()));
