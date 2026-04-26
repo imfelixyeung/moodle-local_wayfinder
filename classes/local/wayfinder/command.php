@@ -17,7 +17,6 @@
 namespace local_wayfinder\local\wayfinder;
 
 use core\lang_string;
-use JsonSerializable;
 use local_wayfinder\output\renderer;
 
 /**
@@ -27,7 +26,7 @@ use local_wayfinder\output\renderer;
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class command implements JsonSerializable {
+class command extends item {
     /**
      * Wayfinder plugin renderer.
      * @var renderer

@@ -16,8 +16,6 @@
 
 namespace local_wayfinder\local\wayfinder;
 
-use JsonSerializable;
-
 /**
  * Separator.
  *
@@ -25,7 +23,7 @@ use JsonSerializable;
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class separator implements JsonSerializable {
+class separator extends item {
     /**
      * Serialise to json.
      * @return array

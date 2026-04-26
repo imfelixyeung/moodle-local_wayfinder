@@ -14,42 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_wayfinder\local\wayfinder\actions;
+namespace local_wayfinder\local\wayfinder;
 
-use local_wayfinder\local\wayfinder\action;
-use local_wayfinder\local\wayfinder\item;
+use JsonSerializable;
 
 /**
- * Submenu action.
+ * Base item.
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class submenu extends action {
-    /**
-     * Array of items to display.
-     * @var array
-     */
-    protected array $items;
-
-    /**
-     * Constrictor.
-     * @param item[] $items
-     */
-    public function __construct(array $items) {
-        $this->items = $items;
-    }
-
-    #[\Override]
-    protected static function get_id(): string {
-        return 'submenu';
-    }
-
-    #[\Override]
-    public function jsonSerialize() {
-        $json = parent::jsonSerialize();
-        $json['items'] = $this->items;
-        return $json;
-    }
+abstract class item implements JsonSerializable {
 }
