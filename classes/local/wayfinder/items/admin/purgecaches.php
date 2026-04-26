@@ -22,6 +22,7 @@ use local_wayfinder\local\wayfinder\action;
 use local_wayfinder\local\wayfinder\actions\submenu;
 use local_wayfinder\local\wayfinder\item;
 use local_wayfinder\local\wayfinder\items\admin\purgecaches\option;
+use local_wayfinder\local\wayfinder\separator;
 
 /**
  * Purge cache.
@@ -43,8 +44,12 @@ class purgecaches extends item {
 
     #[\Override]
     public function get_action(): ?action {
-        $caches = [null, 'theme', 'courses', 'lang', 'js', 'template', 'filter', 'muc', 'other'];
-        $items = array_map(fn(?string $cache) => new option($this->renderer, $cache), $caches);
+        $caches = ['theme', 'courses', 'lang', 'js', 'template', 'filter', 'muc', 'other'];
+        $items = [
+            new option($this->renderer, null),
+            new separator(),
+            ...array_map(fn(?string $cache) => new option($this->renderer, $cache), $caches),
+        ];
         return new submenu($items);
     }
 }

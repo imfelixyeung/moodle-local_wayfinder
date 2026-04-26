@@ -79,6 +79,7 @@ class item implements JsonSerializable {
      */
     public function jsonSerialize() {
         return [
+            'type' => 'item',
             'name' => (string) $this->get_name(),
             'description' => $this->get_description()?->out(),
             'action' => $this->get_action(),

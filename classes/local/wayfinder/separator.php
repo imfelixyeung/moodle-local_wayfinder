@@ -19,29 +19,20 @@ namespace local_wayfinder\local\wayfinder;
 use JsonSerializable;
 
 /**
- * Base wayfinder action.
+ * Separator.
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class action implements JsonSerializable {
-    /**
-     * Action unique id.
-     * @return string
-     */
-    protected static function get_id(): string {
-        return 'unknown';
-    }
-
+class separator implements JsonSerializable {
     /**
      * Serialise to json.
      * @return array
      */
     public function jsonSerialize() {
         return [
-            'type' => 'action',
-            'id' => $this->get_id(),
+            'type' => 'separator',
         ];
     }
 }
