@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import {Command as CommandBase} from "cmdk";
+import {SearchIcon} from "lucide-react";
 import {useHotkey} from "@tanstack/react-hotkeys";
 import {type RequiredLanguageStrings} from "./strings";
 
@@ -132,16 +133,23 @@ export default function Wayfinder(props: Props) {
                 overlayClassName="wayfinder-overlay"
                 contentClassName="wayfinder-content"
             >
-                <CommandBase.Input
-                    placeholder={props.strings["cmdk:input:placeholder"]}
-                    value={input}
-                    onValueChange={setInput}
-                    // Annoyingly theme/boost/amd/src/aria.js comboboxFix() messes with cmdk,
-                    // this is a hacky way to bypass the element matching,
-                    // [role="combobox"][aria-controls]:not([aria-haspopup=dialog])
-                    // but means accessibility becomes questionable.
-                    aria-haspopup="dialog"
-                />
+                <div wayfind-search="">
+                    <SearchIcon
+                        wayfind-search-icon=""
+                        aria-hidden={true}
+                        size={16}
+                    />
+                    <CommandBase.Input
+                        placeholder={props.strings["cmdk:input:placeholder"]}
+                        value={input}
+                        onValueChange={setInput}
+                        // Annoyingly theme/boost/amd/src/aria.js comboboxFix() messes with cmdk,
+                        // this is a hacky way to bypass the element matching,
+                        // [role="combobox"][aria-controls]:not([aria-haspopup=dialog])
+                        // but means accessibility becomes questionable.
+                        aria-haspopup="dialog"
+                    />
+                </div>
                 <CommandBase.List>
                     <CommandBase.Empty>
                         {props.strings["cmdk:results:empty"]}

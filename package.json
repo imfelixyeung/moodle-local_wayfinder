@@ -10,7 +10,8 @@
     "author": "",
     "dependencies": {
         "@tanstack/react-hotkeys": "^0.10.0",
-        "cmdk": "^1.1.1"
+        "cmdk": "^1.1.1",
+        "lucide-react": "^1.11.0"
     },
     "devDependencies": {
         "sass": "^1.99.0"
