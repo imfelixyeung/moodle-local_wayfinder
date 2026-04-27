@@ -22,6 +22,11 @@ use local_wayfinder\local\wayfinder\action;
 /**
  * Form action.
  *
+ * // phpcs:disable moodle.Commenting.ValidTags.Invalid
+ * @phpstan-type form_data array<string, string>
+ * @phpstan-type form_json array{type:'action', id: string, url: string, data: form_data}
+ * // phpcs:enable moodle.Commenting.ValidTags.Invalid
+ *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -30,7 +35,7 @@ class form extends action {
     /** @var url $url Url to redirect to. */
     protected url $url;
 
-    /** @var array  */
+    /** @var array<string, string>  */
     protected array $data;
 
     /**
@@ -48,8 +53,12 @@ class form extends action {
         return 'form';
     }
 
+    /**
+     * {@inheritDoc}
+     * @return form_json
+     */
     #[\Override]
-    public function jsonSerialize() {
+    public function jsonSerialize(): array {
         $json = parent::jsonSerialize();
         $json['url'] = $this->url->out(false);
         $json['data'] = $this->data;

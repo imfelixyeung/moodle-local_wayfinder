@@ -22,6 +22,9 @@ use local_wayfinder\local\wayfinder\action;
 /**
  * redirect action.
  *
+ * // phpcs:ignore moodle.Commenting.ValidTags.Invalid
+ * @phpstan-type redirect_json array{type:'action', id: string, url: string}
+ *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -43,8 +46,12 @@ class redirect extends action {
         return 'redirect';
     }
 
+    /**
+     * {@inheritDoc}
+     * @return redirect_json
+     */
     #[\Override]
-    public function jsonSerialize() {
+    public function jsonSerialize(): array {
         $json = parent::jsonSerialize();
         $json['url'] = $this->url->out(false);
         return $json;

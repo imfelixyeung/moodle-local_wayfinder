@@ -34,9 +34,9 @@ class renderer extends plugin_renderer_base {
      * Renders root.
      * @return string
      */
-    public function render_root() {
+    public function render_root(): string {
         // Prevents layout shift with an initial skeleton before React kicks in.
-        $skeleton = $this->render_from_template('local_wayfinder/skeleton', []);
+        $skeleton = (string) $this->render_from_template('local_wayfinder/skeleton', []);
 
         /** @var item[] $items */
         $items = [

@@ -38,7 +38,8 @@ class grades extends command {
 
     #[\Override]
     public function check_access(): bool {
-        return has_capability('moodle/grade:viewall', course::instance(SITEID));
+        $context = course::instance(SITEID);
+        return $context ? has_capability('moodle/grade:viewall', $context) : false;
     }
 
     #[\Override]

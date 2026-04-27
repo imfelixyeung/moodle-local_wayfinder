@@ -22,6 +22,9 @@ use local_wayfinder\local\wayfinder\item;
 /**
  * Submenu action.
  *
+ * // phpcs:ignore moodle.Commenting.ValidTags.Invalid
+ * @phpstan-type submenu_json array{type:'action', id: string, items: item[]}
+ *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -29,7 +32,7 @@ use local_wayfinder\local\wayfinder\item;
 class submenu extends action {
     /**
      * Array of items to display.
-     * @var array
+     * @var item[]
      */
     protected array $items;
 
@@ -46,8 +49,12 @@ class submenu extends action {
         return 'submenu';
     }
 
+    /**
+     * {@inheritDoc}
+     * @return submenu_json
+     */
     #[\Override]
-    public function jsonSerialize() {
+    public function jsonSerialize(): array {
         $json = parent::jsonSerialize();
         $json['items'] = $this->items;
         return $json;

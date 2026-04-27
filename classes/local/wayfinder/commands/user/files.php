@@ -42,7 +42,8 @@ class files extends command {
             return false;
         }
         global $USER;
-        return has_capability('moodle/user:manageownfiles', user::instance($USER->id));
+        $context = user::instance($USER->id);
+        return $context ? has_capability('moodle/user:manageownfiles', $context) : false;
     }
 
     #[\Override]

@@ -22,6 +22,9 @@ use local_wayfinder\output\renderer;
 /**
  * Base wayfinder command.
  *
+ * // phpcs:ignore moodle.Commenting.ValidTags.Invalid
+ * @phpstan-type command_json array{type: 'command', name: string, description: string|null, action: action|null}
+ *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -65,10 +68,10 @@ class command extends item {
     }
 
     /**
-     * Serialise to json.
-     * @return array
+     * {@inheritDoc}
+     * @return command_json
      */
-    public function jsonSerialize() {
+    public function jsonSerialize(): array {
         return [
             'type' => 'command',
             'name' => (string) $this->get_name(),

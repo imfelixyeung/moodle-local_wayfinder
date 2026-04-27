@@ -38,7 +38,8 @@ class switchrole extends command {
 
     #[\Override]
     public function check_access(): bool {
-        return has_capability('moodle/role:switchroles', course::instance(SITEID));
+        $context = course::instance(SITEID);
+        return $context ? has_capability('moodle/role:switchroles', $context) : false;
     }
 
     #[\Override]

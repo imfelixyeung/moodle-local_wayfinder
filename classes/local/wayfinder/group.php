@@ -21,6 +21,9 @@ use core\lang_string;
 /**
  * Group.
  *
+ * // phpcs:ignore moodle.Commenting.ValidTags.Invalid
+ * @phpstan-type group_json array{type: 'group', name: string, items: item[]}
+ *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -33,7 +36,7 @@ class group extends item {
     protected lang_string $name;
     /**
      * Array of items to display.
-     * @var array
+     * @var item[]
      */
     protected array $items;
 
@@ -47,10 +50,10 @@ class group extends item {
     }
 
     /**
-     * Serialise to json.
-     * @return array
+     * {@inheritDoc}
+     * @return group_json
      */
-    public function jsonSerialize() {
+    public function jsonSerialize(): array {
         return [
             'type' => 'group',
             'name' => (string) $this->name,

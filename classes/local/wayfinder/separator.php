@@ -19,16 +19,19 @@ namespace local_wayfinder\local\wayfinder;
 /**
  * Separator.
  *
+ * // phpcs:ignore moodle.Commenting.ValidTags.Invalid
+ * @phpstan-type separator_json array{type: 'separator'}
+ *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class separator extends item {
     /**
-     * Serialise to json.
-     * @return array
+     * {@inheritDoc}
+     * @return separator_json
      */
-    public function jsonSerialize() {
+    public function jsonSerialize(): array {
         return [
             'type' => 'separator',
         ];

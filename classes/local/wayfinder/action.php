@@ -21,6 +21,9 @@ use JsonSerializable;
 /**
  * Base wayfinder action.
  *
+ * // phpcs:ignore moodle.Commenting.ValidTags.Invalid
+ * @phpstan-type action_json array{type:'action', id: string}
+ *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -35,10 +38,10 @@ class action implements JsonSerializable {
     }
 
     /**
-     * Serialise to json.
-     * @return array
+     * {@inheritDoc}
+     * @return action_json
      */
-    public function jsonSerialize() {
+    public function jsonSerialize(): array {
         return [
             'type' => 'action',
             'id' => $this->get_id(),
