@@ -1,0 +1,6 @@
+includes:
+  - ./phpstan.neon.dist
+
+parameters:
+  moodle:
+    rootDirectory: /home/felixyeung/github.com/moodle/moodle
