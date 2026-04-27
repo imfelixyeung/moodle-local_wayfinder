@@ -41,7 +41,10 @@ class form extends action {
     /**
      * Constructor.
      * @param url $url
-     * @param form_data $data
+     * @param array $data
+     *
+     * // phpcs:ignore moodle.Commenting.ValidTags.Invalid
+     * @phpstan-param form_data $data
      */
     public function __construct(url $url, array $data) {
         $this->url = $url;
