@@ -19,9 +19,9 @@ namespace local_wayfinder\local\wayfinder\commands\core;
 use core\lang_string;
 use local_wayfinder\local\wayfinder\action;
 use local_wayfinder\local\wayfinder\actions\submenu;
-use local_wayfinder\local\wayfinder\command;
+use local_wayfinder\local\wayfinder\items\command;
 use local_wayfinder\local\wayfinder\commands\core\language\option;
-use local_wayfinder\local\wayfinder\page;
+use local_wayfinder\local\wayfinder\items\page;
 use function count;
 
 /**

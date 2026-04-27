@@ -14,51 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_wayfinder\local\wayfinder;
+namespace local_wayfinder\local\wayfinder\items;
 
-use core\lang_string;
+use local_wayfinder\local\wayfinder\item;
 
 /**
- * Page.
+ * Separator.
  *
  * // phpcs:ignore moodle.Commenting.ValidTags.Invalid
- * @phpstan-type page_json array{type: 'page', name: string, items: item[]}
+ * @phpstan-type separator_json array{type: 'separator'}
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class page extends item {
-    /**
-     * Name of the page.
-     * @var lang_string
-     */
-    protected lang_string $name;
-    /**
-     * Array of items to display.
-     * @var item[]
-     */
-    protected array $items;
-
-    /**
-     * Constructor.
-     * @param lang_string $name
-     * @param item[] $items
-     */
-    public function __construct(lang_string $name, array $items) {
-        $this->name = $name;
-        $this->items = $items;
-    }
-
+class separator extends item {
     /**
      * {@inheritDoc}
-     * @return page_json
+     * @return separator_json
      */
     public function jsonSerialize(): array {
         return [
-            'type' => 'page',
-            'name' => (string) $this->name,
-            'items' => self::filter_access($this->items),
+            'type' => 'separator',
         ];
     }
 }

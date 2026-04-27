@@ -20,10 +20,10 @@ use core\context\system;
 use core\lang_string;
 use local_wayfinder\local\wayfinder\action;
 use local_wayfinder\local\wayfinder\actions\submenu;
-use local_wayfinder\local\wayfinder\command;
+use local_wayfinder\local\wayfinder\items\command;
 use local_wayfinder\local\wayfinder\commands\admin\purgecaches\option;
-use local_wayfinder\local\wayfinder\page;
-use local_wayfinder\local\wayfinder\separator;
+use local_wayfinder\local\wayfinder\items\page;
+use local_wayfinder\local\wayfinder\items\separator;
 
 /**
  * Purge cache.

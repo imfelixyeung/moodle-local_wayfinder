@@ -40,7 +40,7 @@ class renderer extends plugin_renderer_base {
 
         /** @var item[] $items */
         $items = [
-            new \local_wayfinder\local\wayfinder\group(
+            new \local_wayfinder\local\wayfinder\items\group(
                 new lang_string('myprofile'),
                 [
                     new \local_wayfinder\local\wayfinder\commands\user\profile($this),
@@ -50,7 +50,7 @@ class renderer extends plugin_renderer_base {
                     new \local_wayfinder\local\wayfinder\commands\user\preferences($this),
                 ]
             ),
-            new \local_wayfinder\local\wayfinder\separator(),
+            new \local_wayfinder\local\wayfinder\items\separator(),
             new \local_wayfinder\local\wayfinder\commands\reportbuilder\reports($this),
             new \local_wayfinder\local\wayfinder\commands\core\language($this),
             new \local_wayfinder\local\wayfinder\commands\course\switchrole($this),
@@ -58,7 +58,7 @@ class renderer extends plugin_renderer_base {
             new \local_wayfinder\local\wayfinder\commands\admin\purgecaches($this),
         ];
 
-        $root = new \local_wayfinder\local\wayfinder\page(new lang_string('pluginname', 'local_wayfinder'), $items);
+        $root = new \local_wayfinder\local\wayfinder\items\page(new lang_string('pluginname', 'local_wayfinder'), $items);
 
         return html_writer::tag(
             'wayfinder-root',

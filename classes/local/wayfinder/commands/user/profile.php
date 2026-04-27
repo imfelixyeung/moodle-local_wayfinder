@@ -20,7 +20,7 @@ use core\lang_string;
 use core\url;
 use local_wayfinder\local\wayfinder\action;
 use local_wayfinder\local\wayfinder\actions\redirect;
-use local_wayfinder\local\wayfinder\command;
+use local_wayfinder\local\wayfinder\items\command;
 
 /**
  * User profile.

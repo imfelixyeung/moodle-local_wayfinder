@@ -17,7 +17,7 @@
 namespace local_wayfinder\local\wayfinder\actions;
 
 use local_wayfinder\local\wayfinder\action;
-use local_wayfinder\local\wayfinder\page;
+use local_wayfinder\local\wayfinder\items\page;
 
 /**
  * Submenu action.

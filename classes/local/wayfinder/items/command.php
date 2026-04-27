@@ -14,9 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_wayfinder\local\wayfinder;
+namespace local_wayfinder\local\wayfinder\items;
 
 use core\lang_string;
+use local_wayfinder\local\wayfinder\action;
+use local_wayfinder\local\wayfinder\item;
 use local_wayfinder\output\renderer;
 
 /**

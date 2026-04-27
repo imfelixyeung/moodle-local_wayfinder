@@ -14,23 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_wayfinder\local\wayfinder;
+namespace local_wayfinder\local\wayfinder\items;
 
 use core\lang_string;
+use local_wayfinder\local\wayfinder\item;
 
 /**
- * Group.
+ * Page.
  *
  * // phpcs:ignore moodle.Commenting.ValidTags.Invalid
- * @phpstan-type group_json array{type: 'group', name: string, items: item[]}
+ * @phpstan-type page_json array{type: 'page', name: string, items: item[]}
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class group extends item {
+class page extends item {
     /**
-     * Name of the group.
+     * Name of the page.
      * @var lang_string
      */
     protected lang_string $name;
@@ -52,13 +53,13 @@ class group extends item {
 
     /**
      * {@inheritDoc}
-     * @return group_json
+     * @return page_json
      */
     public function jsonSerialize(): array {
         return [
-            'type' => 'group',
+            'type' => 'page',
             'name' => (string) $this->name,
-            'items' => $this->items,
+            'items' => self::filter_access($this->items),
         ];
     }
 }
