@@ -8,5 +8,14 @@
     ],
     "require": {
         "php": ">=8.3"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^2.1",
+        "micaherne/phpstan-moodle": "^1.0"
+    },
+    "config": {
+        "platform": {
+            "php": "8.3"
+        }
     }
 }
