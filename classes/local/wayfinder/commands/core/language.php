@@ -53,7 +53,7 @@ class language extends command {
 
         $keys = array_keys($langs);
         $items = array_map(fn($key) => new option($this->renderer, $key), $keys);
-        $page = new page($this->get_name(), $items);
+        $page = new page($this->renderer, $this->get_name(), $items);
         return new submenu($page);
     }
 }

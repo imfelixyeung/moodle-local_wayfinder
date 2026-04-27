@@ -33,6 +33,7 @@ type Action = UnknownAction | FormAction | RedirectAction | SubmenuAction;
 
 type Command = {
     type: "command";
+    subtype?: undefined;
     name: string;
     description: string | null;
     keywords: string[] | null;
@@ -45,10 +46,10 @@ type Group = {
     items: ListItem[];
 };
 
-type Page = {
-    type: "page";
-    name: string;
+type Page = Omit<Command, "action" | "subtype"> & {
+    subtype: "page";
     items: ListItem[];
+    action: SubmenuAction | null;
 };
 
 type Separator = {
@@ -233,10 +234,6 @@ const RenderListItem = ({
 
     if (item.type === "separator") {
         return <CommandBase.Separator />;
-    }
-
-    if (item.type === "page") {
-        return <RenderList items={item.items} onSelect={onSelect} />;
     }
 
     item satisfies never;

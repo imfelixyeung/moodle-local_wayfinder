@@ -51,7 +51,7 @@ class purgecaches extends command {
             new separator(),
             ...array_map(fn(?string $cache) => new option($this->renderer, $cache), $caches),
         ];
-        $page = new page($this->get_name(), $items);
+        $page = new page($this->renderer, $this->get_name(), $items);
         return new submenu($page);
     }
 }

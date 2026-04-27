@@ -58,7 +58,11 @@ class renderer extends plugin_renderer_base {
             new \local_wayfinder\local\wayfinder\commands\admin\purgecaches($this),
         ];
 
-        $root = new \local_wayfinder\local\wayfinder\items\page(new lang_string('pluginname', 'local_wayfinder'), $items);
+        $root = new \local_wayfinder\local\wayfinder\items\page(
+            $this,
+            new lang_string('pluginname', 'local_wayfinder'),
+            $items
+        );
 
         return html_writer::tag(
             'wayfinder-root',

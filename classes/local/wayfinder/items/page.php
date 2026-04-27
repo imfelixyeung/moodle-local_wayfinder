@@ -17,19 +17,29 @@
 namespace local_wayfinder\local\wayfinder\items;
 
 use core\lang_string;
+use local_wayfinder\local\wayfinder\action;
+use local_wayfinder\local\wayfinder\actions\submenu;
 use local_wayfinder\local\wayfinder\item;
+use local_wayfinder\output\renderer;
 
 /**
  * Page.
  *
  * // phpcs:ignore moodle.Commenting.ValidTags.Invalid
- * @phpstan-type page_json array{type: 'page', name: string, items: item[]}
- *
+ * @phpstan-type page_json array{
+ *     type: 'command',
+ *     subtype: 'page',
+ *     name: string,
+ *     description: string|null,
+ *     keywords: string[]|null,
+ *     action: action|null,
+ *     items: item[],
+ * }
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class page extends item {
+class page extends command {
     /**
      * Name of the page.
      * @var lang_string
@@ -43,12 +53,24 @@ class page extends item {
 
     /**
      * Constructor.
+     * @param renderer $renderer
      * @param lang_string $name
      * @param item[] $items
      */
-    public function __construct(lang_string $name, array $items) {
+    public function __construct(renderer $renderer, lang_string $name, array $items) {
+        parent::__construct($renderer);
         $this->name = $name;
         $this->items = $items;
+    }
+
+    #[\Override]
+    public function get_name(): lang_string {
+        return $this->get_name();
+    }
+
+    #[\Override]
+    final public function get_action(): ?action {
+        return $this->items ? new submenu($this) : null;
     }
 
     /**
@@ -57,8 +79,8 @@ class page extends item {
      */
     public function jsonSerialize(): array {
         return [
-            'type' => 'page',
-            'name' => (string) $this->name,
+            ...parent::jsonSerialize(),
+            'subtype' => 'page',
             'items' => self::filter_access($this->items),
         ];
     }
