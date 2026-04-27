@@ -61,7 +61,8 @@ class renderer extends plugin_renderer_base {
         $root = new \local_wayfinder\local\wayfinder\items\page(
             $this,
             new lang_string('pluginname', 'local_wayfinder'),
-            $items
+            $items,
+            false
         );
 
         return html_writer::tag(

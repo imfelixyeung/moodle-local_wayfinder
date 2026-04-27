@@ -50,27 +50,45 @@ class page extends command {
      * @var item[]
      */
     protected array $items;
+    /**
+     * If the page should use submenu action.
+     * This flag is used to prevent infinite recursions.
+     * @var bool
+     */
+    protected bool $hasactions;
+
 
     /**
      * Constructor.
      * @param renderer $renderer
      * @param lang_string $name
      * @param item[] $items
+     * @param bool $hasactions
      */
-    public function __construct(renderer $renderer, lang_string $name, array $items) {
+    public function __construct(renderer $renderer, lang_string $name, array $items, bool $hasactions = true) {
         parent::__construct($renderer);
         $this->name = $name;
         $this->items = $items;
+        $this->hasactions = $hasactions;
     }
 
     #[\Override]
     public function get_name(): lang_string {
-        return $this->get_name();
+        return $this->name;
     }
 
     #[\Override]
     final public function get_action(): ?action {
-        return $this->items ? new submenu($this) : null;
+        return $this->hasactions && $this->items ? new submenu($this) : null;
+    }
+
+    /**
+     * Disables actions for this page.
+     * @return self
+     */
+    final public function disable_actions(): self {
+        $this->hasactions = false;
+        return $this;
     }
 
     /**

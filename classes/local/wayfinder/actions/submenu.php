@@ -56,7 +56,7 @@ class submenu extends action {
     #[\Override]
     public function jsonSerialize(): array {
         $json = parent::jsonSerialize();
-        $json['page'] = $this->page;
+        $json['page'] = $this->page->disable_actions();
         return $json;
     }
 }
