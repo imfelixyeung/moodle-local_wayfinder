@@ -39,7 +39,7 @@ class form extends action {
     protected array $data;
 
     /**
-     * Constrictor.
+     * Constructor.
      * @param url $url
      * @param form_data $data
      */

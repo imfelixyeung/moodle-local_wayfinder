@@ -41,7 +41,7 @@ class group extends item {
     protected array $items;
 
     /**
-     * Constrictor.
+     * Constructor.
      * @param lang_string $name
      * @param item[] $items
      */

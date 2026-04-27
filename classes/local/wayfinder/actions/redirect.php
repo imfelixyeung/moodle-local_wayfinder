@@ -34,7 +34,7 @@ class redirect extends action {
     protected url $url;
 
     /**
-     * Constrictor.
+     * Constructor.
      * @param url $url
      */
     public function __construct(url $url) {

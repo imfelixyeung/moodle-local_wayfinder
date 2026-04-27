@@ -37,7 +37,7 @@ class submenu extends action {
     protected array $items;
 
     /**
-     * Constrictor.
+     * Constructor.
      * @param item[] $items
      */
     public function __construct(array $items) {
