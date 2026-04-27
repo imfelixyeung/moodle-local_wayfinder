@@ -35,13 +35,13 @@ class form extends action {
     /** @var url $url Url to redirect to. */
     protected url $url;
 
-    /** @var array<string, string>  */
+    /** @var form_data  */
     protected array $data;
 
     /**
      * Constrictor.
      * @param url $url
-     * @param array<string, string> $data
+     * @param form_data $data
      */
     public function __construct(url $url, array $data) {
         $this->url = $url;

@@ -37,6 +37,7 @@ class option extends command {
     /**
      * Constructor.
      * @param renderer $renderer
+     * @param string $lang
      */
     public function __construct(renderer $renderer, string $lang) {
         parent::__construct($renderer);

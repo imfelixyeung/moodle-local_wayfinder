@@ -38,6 +38,7 @@ class command extends item {
 
     /**
      * Constructor.
+     * @param renderer $renderer
      */
     public function __construct(renderer $renderer) {
         $this->renderer = $renderer;

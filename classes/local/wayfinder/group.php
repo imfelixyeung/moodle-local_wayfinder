@@ -42,6 +42,7 @@ class group extends item {
 
     /**
      * Constrictor.
+     * @param lang_string $name
      * @param item[] $items
      */
     public function __construct(lang_string $name, array $items) {

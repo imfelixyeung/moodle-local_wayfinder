@@ -36,8 +36,8 @@ class option extends command {
 
     /**
      * Constructor.
-     * @param string|null $cache
      * @param renderer $renderer
+     * @param string|null $cache
      */
     public function __construct(renderer $renderer, ?string $cache) {
         parent::__construct($renderer);
