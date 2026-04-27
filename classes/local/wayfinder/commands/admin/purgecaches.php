@@ -22,6 +22,7 @@ use local_wayfinder\local\wayfinder\action;
 use local_wayfinder\local\wayfinder\actions\submenu;
 use local_wayfinder\local\wayfinder\command;
 use local_wayfinder\local\wayfinder\commands\admin\purgecaches\option;
+use local_wayfinder\local\wayfinder\page;
 use local_wayfinder\local\wayfinder\separator;
 
 /**
@@ -50,6 +51,7 @@ class purgecaches extends command {
             new separator(),
             ...array_map(fn(?string $cache) => new option($this->renderer, $cache), $caches),
         ];
-        return new submenu($items);
+        $page = new page($this->get_name(), $items);
+        return new submenu($page);
     }
 }

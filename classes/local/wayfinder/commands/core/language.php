@@ -21,6 +21,7 @@ use local_wayfinder\local\wayfinder\action;
 use local_wayfinder\local\wayfinder\actions\submenu;
 use local_wayfinder\local\wayfinder\command;
 use local_wayfinder\local\wayfinder\commands\core\language\option;
+use local_wayfinder\local\wayfinder\page;
 use function count;
 
 /**
@@ -52,6 +53,7 @@ class language extends command {
 
         $keys = array_keys($langs);
         $items = array_map(fn($key) => new option($this->renderer, $key), $keys);
-        return new submenu($items);
+        $page = new page($this->get_name(), $items);
+        return new submenu($page);
     }
 }

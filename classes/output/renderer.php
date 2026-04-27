@@ -58,7 +58,7 @@ class renderer extends plugin_renderer_base {
             new \local_wayfinder\local\wayfinder\commands\admin\purgecaches($this),
         ];
 
-        $items = array_values(array_filter($items, fn(item $item) => $item->check_access()));
+        $root = new \local_wayfinder\local\wayfinder\page(new lang_string('pluginname', 'local_wayfinder'), $items);
 
         return html_writer::tag(
             'wayfinder-root',
@@ -72,7 +72,7 @@ class renderer extends plugin_renderer_base {
                         'cmdk:input:placeholder' => get_string('cmdk:input:placeholder', 'local_wayfinder'),
                         'cmdk:results:empty' => get_string('cmdk:results:empty', 'local_wayfinder'),
                     ],
-                    'list' => $items,
+                    'root' => $root,
                 ]),
             ]
         );

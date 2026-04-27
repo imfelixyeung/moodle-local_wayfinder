@@ -26,7 +26,7 @@ type RedirectAction = BaseAction & {
 
 type SubmenuAction = BaseAction & {
     id: "submenu";
-    items: ListItem[];
+    page: Page;
 };
 
 type Action = UnknownAction | FormAction | RedirectAction | SubmenuAction;
@@ -44,25 +44,31 @@ type Group = {
     items: ListItem[];
 };
 
+type Page = {
+    type: "page";
+    name: string;
+    items: ListItem[];
+};
+
 type Separator = {
     type: "separator";
 };
 
-type ListItem = Command | Group | Separator;
+type ListItem = Command | Group | Page | Separator;
 
 type Props = {
     icon: {html: string};
     strings: RequiredLanguageStrings;
-    list: ListItem[];
+    root: Page;
 };
 
 export default function Wayfinder(props: Props) {
-    const [items, setItems] = React.useState(() => props.list);
+    const [pages, setPages] = React.useState(() => [props.root]);
     const [open, setOpen] = React.useState(false);
     const [input, setInput] = React.useState("");
     const openPalette = () => setOpen(true);
-    useHotkey("Control+K", openPalette);
-    useHotkey("/", openPalette);
+    useHotkey("Control+K", openPalette, {enabled: !open});
+    useHotkey("/", openPalette, {enabled: !open});
 
     const onCommandSelected = (item: ListItem) => {
         if (item.type !== "command") {
@@ -102,7 +108,7 @@ export default function Wayfinder(props: Props) {
         }
 
         if (action.id === "submenu") {
-            setItems(action.items);
+            setPages((pages) => [...pages, action.page]);
             setInput("");
             return;
         }
@@ -113,9 +119,27 @@ export default function Wayfinder(props: Props) {
     const onDialogOpenChange = (open: boolean) => {
         setOpen(open);
         if (!open) {
-            setItems(props.list);
+            setPages(([page]) => [page]);
             setInput("");
         }
+    };
+
+    const currentPage = React.useMemo(() => pages[pages.length - 1], [pages]);
+    const previousPage = React.useMemo(() => pages[pages.length - 2], [pages]);
+
+    const pageBack = () =>
+        setPages((pages) => (pages.length === 1 ? pages : pages.slice(0, -1)));
+
+    const onKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
+        const shouldGoBack =
+            previousPage && event.key === "Backspace" && !input;
+
+        if (!shouldGoBack) {
+            return;
+        }
+
+        event.preventDefault();
+        pageBack();
     };
 
     return (
@@ -127,6 +151,7 @@ export default function Wayfinder(props: Props) {
                 dangerouslySetInnerHTML={{__html: props.icon.html}}
             />
             <CommandBase.Dialog
+                onKeyDown={onKeyDown}
                 open={open}
                 onOpenChange={onDialogOpenChange}
                 label={props.strings["cmdk:dialog:label"]}
@@ -154,7 +179,10 @@ export default function Wayfinder(props: Props) {
                     <CommandBase.Empty>
                         {props.strings["cmdk:results:empty"]}
                     </CommandBase.Empty>
-                    <RenderList items={items} onSelect={onCommandSelected} />
+                    <RenderList
+                        items={currentPage.items}
+                        onSelect={onCommandSelected}
+                    />
                 </CommandBase.List>
             </CommandBase.Dialog>
         </>
@@ -203,6 +231,10 @@ const RenderListItem = ({
 
     if (item.type === "separator") {
         return <CommandBase.Separator />;
+    }
+
+    if (item.type === "page") {
+        return <RenderList items={item.items} onSelect={onSelect} />;
     }
 
     item satisfies never;

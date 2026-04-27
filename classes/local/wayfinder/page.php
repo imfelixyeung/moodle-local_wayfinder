@@ -16,31 +16,49 @@
 
 namespace local_wayfinder\local\wayfinder;
 
-use JsonSerializable;
+use core\lang_string;
 
 /**
- * Base item.
+ * Page.
+ *
+ * // phpcs:ignore moodle.Commenting.ValidTags.Invalid
+ * @phpstan-type page_json array{type: 'page', name: string, items: item[]}
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-abstract class item implements JsonSerializable {
+class page extends item {
     /**
-     * Checks if the current user has access to this item.
-     * @return bool
+     * Name of the page.
+     * @var lang_string
      */
-    public function check_access(): bool {
-        return true;
+    protected lang_string $name;
+    /**
+     * Array of items to display.
+     * @var item[]
+     */
+    protected array $items;
+
+    /**
+     * Constructor.
+     * @param lang_string $name
+     * @param item[] $items
+     */
+    public function __construct(lang_string $name, array $items) {
+        $this->name = $name;
+        $this->items = $items;
     }
 
     /**
-     * Filters a given set of items checking user access to the items.
-     * @param self[] $items
-     * @return self[]
+     * {@inheritDoc}
+     * @return page_json
      */
-    public static function filter_access(array $items): array {
-        $items = array_values(array_filter($items, fn(item $item) => $item->check_access()));
-        return $items;
+    public function jsonSerialize(): array {
+        return [
+            'type' => 'page',
+            'name' => (string) $this->name,
+            'items' => self::filter_access($this->items),
+        ];
     }
 }

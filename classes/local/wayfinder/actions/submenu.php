@@ -17,13 +17,13 @@
 namespace local_wayfinder\local\wayfinder\actions;
 
 use local_wayfinder\local\wayfinder\action;
-use local_wayfinder\local\wayfinder\item;
+use local_wayfinder\local\wayfinder\page;
 
 /**
  * Submenu action.
  *
  * // phpcs:ignore moodle.Commenting.ValidTags.Invalid
- * @phpstan-type submenu_json array{type:'action', id: string, items: item[]}
+ * @phpstan-type submenu_json array{type:'action', id: string, page: page}
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
@@ -31,17 +31,17 @@ use local_wayfinder\local\wayfinder\item;
  */
 class submenu extends action {
     /**
-     * Array of items to display.
-     * @var item[]
+     * Page to dispay.
+     * @var page
      */
-    protected array $items;
+    protected page $page;
 
     /**
      * Constructor.
-     * @param item[] $items
+     * @param page $page
      */
-    public function __construct(array $items) {
-        $this->items = $items;
+    public function __construct(page $page) {
+        $this->page = $page;
     }
 
     #[\Override]
@@ -56,7 +56,7 @@ class submenu extends action {
     #[\Override]
     public function jsonSerialize(): array {
         $json = parent::jsonSerialize();
-        $json['items'] = $this->items;
+        $json['page'] = $this->page;
         return $json;
     }
 }
