@@ -61,6 +61,11 @@ class option extends command {
     }
 
     #[\Override]
+    public function get_keywords(): ?array {
+        return $this->cache ? [$this->cache] : null;
+    }
+
+    #[\Override]
     public function get_action(): ?action {
         $baseurl = new url('/admin/purgecaches.php');
         $commondata = [

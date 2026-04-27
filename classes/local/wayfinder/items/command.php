@@ -25,7 +25,13 @@ use local_wayfinder\output\renderer;
  * Base wayfinder command.
  *
  * // phpcs:ignore moodle.Commenting.ValidTags.Invalid
- * @phpstan-type command_json array{type: 'command', name: string, description: string|null, action: action|null}
+ * @phpstan-type command_json array{
+ *     type: 'command',
+ *     name: string,
+ *     description: string|null,
+ *     keywords: string[]|null,
+ *     action: action|null,
+ * }
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
@@ -63,6 +69,14 @@ class command extends item {
     }
 
     /**
+     * Gets the description of the command.
+     * @return string[]|null
+     */
+    public function get_keywords(): ?array {
+        return null;
+    }
+
+    /**
      * Gets the action of the command.
      * @return ?action
      */
@@ -79,6 +93,7 @@ class command extends item {
             'type' => 'command',
             'name' => (string) $this->get_name(),
             'description' => $this->get_description()?->out(),
+            'keywords' => $this->get_keywords(),
             'action' => $this->get_action(),
         ];
     }

@@ -55,6 +55,11 @@ class option extends command {
     }
 
     #[\Override]
+    public function get_keywords(): array {
+        return [$this->lang];
+    }
+
+    #[\Override]
     public function get_action(): ?action {
         return new redirect(new url($this->renderer->get_page()->url, ['lang' => $this->lang]));
     }

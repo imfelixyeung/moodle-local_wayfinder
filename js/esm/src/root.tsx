@@ -35,6 +35,7 @@ type Command = {
     type: "command";
     name: string;
     description: string | null;
+    keywords: string[] | null;
     action: Action | null;
 };
 
@@ -215,6 +216,7 @@ const RenderListItem = ({
             <CommandBase.Item
                 onSelect={onSelect.bind(null, item)}
                 disabled={!item.action}
+                keywords={item.keywords ?? undefined}
             >
                 {item.name}
             </CommandBase.Item>
