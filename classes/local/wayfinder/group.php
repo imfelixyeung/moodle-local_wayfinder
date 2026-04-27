@@ -17,51 +17,33 @@
 namespace local_wayfinder\local\wayfinder;
 
 use core\lang_string;
-use local_wayfinder\output\renderer;
 
 /**
- * Base wayfinder command.
+ * Group.
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class command extends item {
+class group extends item {
     /**
-     * Wayfinder plugin renderer.
-     * @var renderer
+     * Name of the group.
+     * @var lang_string
      */
-    protected renderer $renderer;
+    protected lang_string $name;
+    /**
+     * Array of items to display.
+     * @var array
+     */
+    protected array $items;
 
     /**
-     * Constructor.
+     * Constrictor.
+     * @param item[] $items
      */
-    public function __construct(renderer $renderer) {
-        $this->renderer = $renderer;
-    }
-
-    /**
-     * Gets the name of the command.
-     * @return lang_string
-     */
-    public function get_name(): lang_string {
-        return new lang_string('unknown');
-    }
-
-    /**
-     * Gets the description of the command.
-     * @return lang_string|null
-     */
-    public function get_description(): ?lang_string {
-        return null;
-    }
-
-    /**
-     * Gets the action of the command.
-     * @return ?action
-     */
-    public function get_action(): ?action {
-        return null;
+    public function __construct(lang_string $name, array $items) {
+        $this->name = $name;
+        $this->items = $items;
     }
 
     /**
@@ -70,10 +52,9 @@ class command extends item {
      */
     public function jsonSerialize() {
         return [
-            'type' => 'command',
-            'name' => (string) $this->get_name(),
-            'description' => $this->get_description()?->out(),
-            'action' => $this->get_action(),
+            'type' => 'group',
+            'name' => (string) $this->name,
+            'items' => $this->items,
         ];
     }
 }

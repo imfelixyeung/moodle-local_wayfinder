@@ -26,4 +26,11 @@ use JsonSerializable;
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 abstract class item implements JsonSerializable {
+    /**
+     * Checks if the current user has access to this item.
+     * @return bool
+     */
+    public function check_access(): bool {
+        return true;
+    }
 }

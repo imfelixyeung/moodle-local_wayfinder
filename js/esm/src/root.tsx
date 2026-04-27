@@ -37,11 +37,17 @@ type Command = {
     action: Action | null;
 };
 
+type Group = {
+    type: "group";
+    name: string;
+    items: ListItem[];
+};
+
 type Separator = {
     type: "separator";
 };
 
-type ListItem = Command | Separator;
+type ListItem = Command | Group | Separator;
 
 type Props = {
     icon: {html: string};
@@ -57,7 +63,12 @@ export default function Wayfinder(props: Props) {
     useHotkey("Control+K", openPalette);
     useHotkey("/", openPalette);
 
-    const onCommandSelected = (command: Command) => {
+    const onCommandSelected = (item: ListItem) => {
+        if (item.type !== "command") {
+            return;
+        }
+        const command = item;
+
         const {action} = command;
         if (!action) {
             return;
@@ -135,23 +146,57 @@ export default function Wayfinder(props: Props) {
                     <CommandBase.Empty>
                         {props.strings["cmdk:results:empty"]}
                     </CommandBase.Empty>
-
-                    {items.map((command, index) => {
-                        if (item.type === "separator") {
-                            return <CommandBase.Separator key={index} />;
-                        }
-                        return (
-                            <CommandBase.Item
-                                key={index}
-                                onSelect={onCommandSelected.bind(null, item)}
-                                disabled={!item.action}
-                            >
-                                {item.name}
-                            </CommandBase.Item>
-                        );
-                    })}
+                    <RenderList items={items} onSelect={onCommandSelected} />
                 </CommandBase.List>
             </CommandBase.Dialog>
         </>
     );
 }
+
+const RenderList = ({
+    items,
+    onSelect,
+}: {
+    items: ListItem[];
+    // eslint-disable-next-line no-unused-vars
+    onSelect: (item: ListItem) => void;
+}) => {
+    return items.map((item, index) => (
+        <RenderListItem key={index} item={item} onSelect={onSelect} />
+    ));
+};
+
+const RenderListItem = ({
+    item,
+    onSelect,
+}: {
+    item: ListItem;
+    // eslint-disable-next-line no-unused-vars
+    onSelect: (item: ListItem) => void;
+}) => {
+    if (item.type === "command") {
+        return (
+            <CommandBase.Item
+                onSelect={onSelect.bind(null, item)}
+                disabled={!item.action}
+            >
+                {item.name}
+            </CommandBase.Item>
+        );
+    }
+
+    if (item.type === "group") {
+        return (
+            <CommandBase.Group heading={item.name}>
+                <RenderList items={item.items} onSelect={onSelect} />
+            </CommandBase.Group>
+        );
+    }
+
+    if (item.type === "separator") {
+        return <CommandBase.Separator />;
+    }
+
+    item satisfies never;
+    return null;
+};
