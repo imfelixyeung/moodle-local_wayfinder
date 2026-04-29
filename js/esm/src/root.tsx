@@ -67,16 +67,28 @@ type Props = {
 export default function Wayfinder(props: Props) {
     const [pages, setPages] = React.useState(() => [props.root]);
     const [open, setOpen] = React.useState(false);
+    const [value, setValue] = React.useState("");
     const [input, setInput] = React.useState("");
     const openPalette = () => setOpen(true);
     useHotkey("Control+K", openPalette, {enabled: !open});
     useHotkey("/", openPalette, {enabled: !open});
+
+    const resetSearch = () => {
+        setValue("");
+        setInput("");
+    };
 
     const onCommandSelected = (item: ListItem) => {
         if (item.type !== "command") {
             return;
         }
         const command = item;
+
+        if (item.subtype === "page") {
+            setPages((pages) => [...pages, item]);
+            resetSearch();
+            return;
+        }
 
         const {action} = command;
         if (!action) {
@@ -111,7 +123,7 @@ export default function Wayfinder(props: Props) {
 
         if (action.id === "submenu") {
             setPages((pages) => [...pages, action.page]);
-            setInput("");
+            resetSearch();
             return;
         }
 
@@ -122,7 +134,7 @@ export default function Wayfinder(props: Props) {
         setOpen(open);
         if (!open) {
             setPages(([page]) => [page]);
-            setInput("");
+            resetSearch();
         }
     };
 
@@ -159,6 +171,8 @@ export default function Wayfinder(props: Props) {
                 label={props.strings["cmdk:dialog:label"]}
                 overlayClassName="wayfinder-overlay"
                 contentClassName="wayfinder-content"
+                value={value}
+                onValueChange={setValue}
             >
                 <div wayfind-search="">
                     <SearchIcon
@@ -216,7 +230,7 @@ const RenderListItem = ({
         return (
             <CommandBase.Item
                 onSelect={onSelect.bind(null, item)}
-                disabled={!item.action}
+                disabled={!item.subtype && !item.action}
                 keywords={item.keywords ?? undefined}
             >
                 {item.name}

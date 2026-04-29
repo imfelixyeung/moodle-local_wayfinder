@@ -54,17 +54,17 @@ class command extends item {
 
     /**
      * Gets the name of the command.
-     * @return lang_string
+     * @return lang_string|string
      */
-    public function get_name(): lang_string {
+    public function get_name(): lang_string|string {
         return new lang_string('unknown');
     }
 
     /**
      * Gets the description of the command.
-     * @return lang_string|null
+     * @return lang_string|string|null
      */
-    public function get_description(): ?lang_string {
+    public function get_description(): lang_string|string|null {
         return null;
     }
 
@@ -92,7 +92,7 @@ class command extends item {
         return [
             'type' => 'command',
             'name' => (string) $this->get_name(),
-            'description' => $this->get_description()?->out(),
+            'description' => (string) $this->get_description(),
             'keywords' => $this->get_keywords(),
             'action' => $this->get_action(),
         ];

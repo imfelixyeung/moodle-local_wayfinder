@@ -42,9 +42,9 @@ use local_wayfinder\output\renderer;
 class page extends command {
     /**
      * Name of the page.
-     * @var lang_string
+     * @var lang_string|string
      */
-    protected lang_string $name;
+    protected lang_string|string $name;
     /**
      * Array of items to display.
      * @var item[]
@@ -61,11 +61,11 @@ class page extends command {
     /**
      * Constructor.
      * @param renderer $renderer
-     * @param lang_string $name
+     * @param lang_string|string $name
      * @param item[] $items
      * @param bool $hasactions
      */
-    public function __construct(renderer $renderer, lang_string $name, array $items, bool $hasactions = true) {
+    public function __construct(renderer $renderer, lang_string|string $name, array $items, bool $hasactions = true) {
         parent::__construct($renderer);
         $this->name = $name;
         $this->items = $items;
@@ -73,7 +73,7 @@ class page extends command {
     }
 
     #[\Override]
-    public function get_name(): lang_string {
+    public function get_name(): lang_string|string {
         return $this->name;
     }
 

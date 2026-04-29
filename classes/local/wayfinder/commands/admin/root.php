@@ -14,46 +14,40 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_wayfinder\local\wayfinder\actions;
+namespace local_wayfinder\local\wayfinder\commands\admin;
 
-use core\url;
+use core\context\system;
+use core\lang_string;
 use local_wayfinder\local\wayfinder\action;
+use local_wayfinder\local\wayfinder\actions\submenu;
+use local_wayfinder\local\wayfinder\commands\admin\root\category;
+use local_wayfinder\local\wayfinder\items\command;
 
 /**
- * redirect action.
- *
- * // phpcs:ignore moodle.Commenting.ValidTags.Invalid
- * @phpstan-type redirect_json array{type:'action', id: string, url: string}
+ * Purge cache.
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class redirect extends action {
-    /** @var url|string $url Url to redirect to. */
-    protected url|string $url;
-
-    /**
-     * Constructor.
-     * @param url|string $url
-     */
-    public function __construct(url|string $url) {
-        $this->url = $url;
+class root extends command {
+    #[\Override]
+    public function get_name(): lang_string {
+        return new lang_string('administrationsite');
     }
 
     #[\Override]
-    protected static function get_id(): string {
-        return 'redirect';
+    public function check_access(): bool {
+        return has_capability('moodle/site:config', system::instance());
     }
 
-    /**
-     * {@inheritDoc}
-     * @return redirect_json
-     */
     #[\Override]
-    public function jsonSerialize(): array {
-        $json = parent::jsonSerialize();
-        $json['url'] = $this->url instanceof url ? $this->url->out(false) : $this->url;
-        return $json;
+    public function get_action(): ?action {
+        global $CFG;
+        require_once($CFG->libdir . '/adminlib.php');
+        /** @var \admin_root $root */
+        $root = admin_get_root(reload: false, requirefulltree: false);
+        $page = new category($this->renderer, $root);
+        return new submenu($page);
     }
 }

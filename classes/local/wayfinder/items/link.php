@@ -14,46 +14,47 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_wayfinder\local\wayfinder\actions;
+namespace local_wayfinder\local\wayfinder\items;
 
+use core\lang_string;
 use core\url;
 use local_wayfinder\local\wayfinder\action;
+use local_wayfinder\local\wayfinder\actions\redirect;
+use local_wayfinder\output\renderer;
 
 /**
- * redirect action.
- *
- * // phpcs:ignore moodle.Commenting.ValidTags.Invalid
- * @phpstan-type redirect_json array{type:'action', id: string, url: string}
+ * Link.
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class redirect extends action {
-    /** @var url|string $url Url to redirect to. */
+class link extends command {
+    /** @var lang_string|string */
+    protected lang_string|string $name;
+
+    /** @var url|string */
     protected url|string $url;
 
     /**
      * Constructor.
+     * @param renderer $renderer
+     * @param lang_string|string $name
      * @param url|string $url
      */
-    public function __construct(url|string $url) {
+    public function __construct(renderer $renderer, lang_string|string $name, url|string $url) {
+        $this->renderer = $renderer;
+        $this->name = $name;
         $this->url = $url;
     }
 
     #[\Override]
-    protected static function get_id(): string {
-        return 'redirect';
+    public function get_name(): lang_string|string {
+        return $this->name;
     }
 
-    /**
-     * {@inheritDoc}
-     * @return redirect_json
-     */
     #[\Override]
-    public function jsonSerialize(): array {
-        $json = parent::jsonSerialize();
-        $json['url'] = $this->url instanceof url ? $this->url->out(false) : $this->url;
-        return $json;
+    public function get_action(): action {
+        return new redirect($this->url);
     }
 }
