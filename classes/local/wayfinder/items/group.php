@@ -59,7 +59,7 @@ class group extends item {
         return [
             'type' => 'group',
             'name' => (string) $this->name,
-            'items' => $this->items,
+            'items' => self::filter_access($this->items),
         ];
     }
 }
