@@ -55,8 +55,13 @@ class renderer extends plugin_renderer_base {
             new \local_wayfinder\local\wayfinder\commands\core\language($this),
             new \local_wayfinder\local\wayfinder\commands\course\switchrole($this),
             new \local_wayfinder\local\wayfinder\commands\core\logout($this),
-            new \local_wayfinder\local\wayfinder\commands\admin\root($this),
-            new \local_wayfinder\local\wayfinder\commands\admin\purgecaches($this),
+            new \local_wayfinder\local\wayfinder\items\group(
+                new lang_string('admin'),
+                [
+                    new \local_wayfinder\local\wayfinder\commands\admin\root($this),
+                    new \local_wayfinder\local\wayfinder\commands\admin\purgecaches($this),
+                ]
+            ),
         ];
 
         $root = new \local_wayfinder\local\wayfinder\items\page(
