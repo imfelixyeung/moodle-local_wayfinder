@@ -16,6 +16,8 @@
 
 namespace local_wayfinder\local\wayfinder\items;
 
+use core\context;
+use core\context\course;
 use core\lang_string;
 use local_wayfinder\local\wayfinder\action;
 use local_wayfinder\local\wayfinder\item;
@@ -82,6 +84,29 @@ class command extends item {
      */
     public function get_action(): ?action {
         return null;
+    }
+
+    /**
+     * Get context
+     * // phpcs:ignore
+     * @template T of context
+     * @param class-string<T> $context
+     * @return T|null
+     */
+    protected function get_context(string $context): ?context {
+        $pagecontext = $this->renderer->get_page()->context;
+        if (!($pagecontext instanceof $context)) {
+            return null;
+        }
+        return $pagecontext;
+    }
+
+    /**
+     * Gets course context.
+     * @return course|null
+     */
+    protected function get_context_course(): ?course {
+        return $this->get_context(course::class);
     }
 
     /**
