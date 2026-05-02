@@ -46,8 +46,8 @@ class navnode extends command {
     }
 
     #[\Override]
-    public function get_name(): string {
-        return $this->node->text ?? $this->node->get_title() ?? new lang_string('unknown');
+    public function get_name(): lang_string|string {
+        return $this->node->text;
     }
 
     #[\Override]
