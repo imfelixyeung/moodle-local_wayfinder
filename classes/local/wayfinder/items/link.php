@@ -36,21 +36,31 @@ class link extends command {
     /** @var url|string */
     protected url|string $url;
 
+    /** @var string[]|null */
+    protected ?array $keywords;
+
     /**
      * Constructor.
      * @param renderer $renderer
      * @param lang_string|string $name
      * @param url|string $url
+     * @param string[]|null $keywords
      */
-    public function __construct(renderer $renderer, lang_string|string $name, url|string $url) {
+    public function __construct(renderer $renderer, lang_string|string $name, url|string $url, ?array $keywords = []) {
         $this->renderer = $renderer;
         $this->name = $name;
         $this->url = $url;
+        $this->keywords = $keywords;
     }
 
     #[\Override]
     public function get_name(): lang_string|string {
         return $this->name;
+    }
+
+    #[\Override]
+    public function get_keywords(): ?array {
+        return $this->keywords;
     }
 
     #[\Override]

@@ -54,8 +54,9 @@ class profile extends group {
                 continue;
             }
 
+            // It appears the titleidentifier is in form of {key},moodle, so we extract the key.
             $keyword = explode(',', $navitem->titleidentifier)[0];
-            $items[] = new link($renderer, $navitem->title, $navitem->url, $keyword ?? null);
+            $items[] = new link($renderer, $navitem->title, $navitem->url, $keyword ? [$keyword] : null);
         }
 
         parent::__construct($renderer, new lang_string('myprofile'), $items);
