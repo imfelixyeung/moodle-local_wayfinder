@@ -21,6 +21,7 @@ use core\navigation\navigation_node;
 use core\url;
 use local_wayfinder\local\wayfinder\action;
 use local_wayfinder\local\wayfinder\actions\redirect;
+use local_wayfinder\local\wayfinder\actions\submenu;
 use local_wayfinder\local\wayfinder\items\command;
 use local_wayfinder\output\renderer;
 
@@ -57,9 +58,29 @@ class navnode extends command {
     #[\Override]
     public function get_action(): ?action {
         $url = $this->node->action();
-        if (!($url instanceof url)) {
-            return null;
+        $children = $this->node->children;
+        if (!count($children)) {
+            if (!($url instanceof url)) {
+                return null;
+            }
+            return new redirect($url);
         }
-        return new redirect($url);
+
+        $items = [
+            new link(
+                $this->renderer,
+                get_string('view') . ' ' . $this->get_name(),
+                $url,
+            ),
+            new separator($this->renderer),
+        ];
+
+        /** @var navigation_node $child */
+        foreach ($children as $child) {
+            $items[] = new self($this->renderer, $child);
+        }
+
+        $page = new page($this->renderer, $this->get_name(), $items, false);
+        return new submenu($page);
     }
 }
