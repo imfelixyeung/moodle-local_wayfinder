@@ -340,6 +340,13 @@ RenderListItem.CommandOrPage = ({
                 <RenderListItem.Icon item={item} />
                 <div>{item.name}</div>
             </div>
+            {hotkey && (
+                <RenderHotkey
+                    hotkey={hotkey}
+                    // TODO: Fix me.
+                    strings={{} as RequiredLanguageStrings}
+                />
+            )}
         </CommandBase.Item>
     );
 };
@@ -378,4 +385,55 @@ RenderListItem.Icon = ({item}: {item: ListItem}) => {
     }
 
     return <Icon size={16} aria-hidden={true} />;
+};
+
+const RenderHotkey = ({
+    hotkey,
+    combination = "and",
+    strings,
+    ...rest
+}: {
+    hotkey: RawHotkey;
+    combination?: "and" | "or";
+    strings: RequiredLanguageStrings;
+} & React.ComponentProps<"div">) => {
+    const parts = React.useMemo(() => {
+        const parts: string[] = [];
+        if (hotkey.mod) {
+            parts.push(strings["cmdk:modifiers:mod"]);
+        }
+        if (hotkey.ctrl) {
+            parts.push(strings["cmdk:modifiers:ctrl"]);
+        }
+        if (hotkey.shift) {
+            parts.push(strings["cmdk:modifiers:shift"]);
+        }
+        if (hotkey.alt) {
+            parts.push(strings["cmdk:modifiers:alt"]);
+        }
+        if (hotkey.meta) {
+            parts.push(strings["cmdk:modifiers:meta"]);
+        }
+        parts.push(hotkey.key);
+        return parts;
+    }, [hotkey, strings]);
+
+    return (
+        <div className="wayfinder-shortcut" {...rest}>
+            {parts.map((part, index, parts) => {
+                const isLast = parts.length - 1 === index;
+                const combinationString =
+                    combination === "and"
+                        ? strings["cmdk:shortcuts:combination:and"]
+                        : strings["cmdk:shortcuts:combination:or"];
+                return (
+                    <>
+                        <kbd>{part}</kbd>
+                        {!isLast ? <span>{combinationString}</span> : null}
+                    </>
+                );
+            })}{" "}
+            {strings["cmdk:shortcuts:open:label"]}
+        </div>
+    );
 };
