@@ -389,10 +389,12 @@ RenderListItem.Icon = ({item}: {item: ListItem}) => {
 
 const RenderHotkey = ({
     hotkey,
+    label,
     combination = "and",
     ...rest
 }: {
     hotkey: RawHotkey;
+    label?: string;
     combination?: "and" | "or";
 } & React.ComponentProps<"div">) => {
     const strings = useStrings();
@@ -428,11 +430,15 @@ const RenderHotkey = ({
                 return (
                     <>
                         <kbd>{part}</kbd>
-                        {!isLast ? <span>{combinationString}</span> : null}
+                        {!isLast ? (
+                            <span className="wayfinder-shortcut-combination">
+                                {combinationString}
+                            </span>
+                        ) : null}
                     </>
                 );
             })}{" "}
-            {strings["cmdk:shortcuts:open:label"]}
+            {label && <span className="wayfinder-shortcut-label">{label}</span>}
         </div>
     );
 };
