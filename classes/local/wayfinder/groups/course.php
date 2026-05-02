@@ -44,4 +44,9 @@ class course extends group {
 
         parent::__construct($renderer, new lang_string('course'), $items);
     }
+
+    #[\Override]
+    public function check_access(): bool {
+        return (bool) $this->items && $this->get_context_course() !== null;
+    }
 }
