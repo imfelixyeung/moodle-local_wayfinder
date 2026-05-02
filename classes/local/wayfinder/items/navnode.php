@@ -39,6 +39,7 @@ class navnode extends command {
     /**
      * Constructor.
      * @param renderer $renderer
+     * @param navigation_node $node
      */
     public function __construct(renderer $renderer, navigation_node $node) {
         parent::__construct($renderer);

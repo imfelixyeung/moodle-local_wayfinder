@@ -46,10 +46,13 @@ abstract class item implements JsonSerializable {
 
     /**
      * Get context
-     * // phpcs:ignore
+     * // phpcs:disable moodle.Commenting.ValidTags.Invalid
+     * @param string $context
+     * @return context|null
      * @template T of context
-     * @param class-string<T> $context
-     * @return T|null
+     * @phpstan-param class-string<T> $context
+     * @phpstan-return T|null $context
+     * // phpcs:enable moodle.Commenting.ValidTags.Invalid
      */
     protected function get_context(string $context): ?context {
         $pagecontext = $this->renderer->get_page()->context;
