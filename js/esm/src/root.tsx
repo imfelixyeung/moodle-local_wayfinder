@@ -10,7 +10,7 @@ import {
     SearchIcon,
 } from "lucide-react";
 import {useHotkey} from "@tanstack/react-hotkeys";
-import {type RequiredLanguageStrings} from "./strings";
+import {StringsProvider, type RequiredLanguageStrings} from "./strings";
 
 type BaseAction = {
     type: "action";
@@ -165,7 +165,7 @@ export default function Wayfinder(props: Props) {
     };
 
     return (
-        <>
+        <StringsProvider strings={strings}>
             <a
                 href="#"
                 className="nav-link icon-no-margin"
@@ -250,7 +250,7 @@ export default function Wayfinder(props: Props) {
                     </div>
                 </section>
             </CommandBase.Dialog>
-        </>
+        </StringsProvider>
     );
 }
 
