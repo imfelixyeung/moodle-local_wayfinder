@@ -43,22 +43,9 @@ class renderer extends plugin_renderer_base {
             new \local_wayfinder\local\wayfinder\groups\module($this),
             new \local_wayfinder\local\wayfinder\groups\course($this),
             new \local_wayfinder\local\wayfinder\groups\primary($this),
-            new \local_wayfinder\local\wayfinder\items\group(
-                $this,
-                new lang_string('myprofile'),
-                [
-                    new \local_wayfinder\local\wayfinder\commands\user\profile($this),
-                    new \local_wayfinder\local\wayfinder\commands\grade\grades($this),
-                    new \local_wayfinder\local\wayfinder\commands\calendar\calendar($this),
-                    new \local_wayfinder\local\wayfinder\commands\user\files($this),
-                    new \local_wayfinder\local\wayfinder\commands\user\preferences($this),
-                ]
-            ),
+            new \local_wayfinder\local\wayfinder\groups\profile($this),
             new \local_wayfinder\local\wayfinder\items\separator($this),
-            new \local_wayfinder\local\wayfinder\commands\reportbuilder\reports($this),
             new \local_wayfinder\local\wayfinder\commands\core\language($this),
-            new \local_wayfinder\local\wayfinder\commands\course\switchrole($this),
-            new \local_wayfinder\local\wayfinder\commands\core\logout($this),
             new \local_wayfinder\local\wayfinder\items\group(
                 $this,
                 new lang_string('admin'),
