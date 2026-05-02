@@ -275,12 +275,15 @@ const RenderListItem = ({
     // eslint-disable-next-line no-unused-vars
     onSelect: (item: ListItem) => void;
 }) => {
+    const id = React.useId();
     if (item.type === "command") {
         return (
             <CommandBase.Item
+                id={id}
                 onSelect={onSelect.bind(null, item)}
                 disabled={!item.subtype && !item.action}
                 keywords={item.keywords ?? undefined}
+                value={`${item.name} (id:${id})`}
             >
                 <div className="wayfinder-item">
                     <RenderListItem.Icon item={item} />
@@ -292,14 +295,18 @@ const RenderListItem = ({
 
     if (item.type === "group") {
         return (
-            <CommandBase.Group heading={item.name}>
+            <CommandBase.Group
+                id={id}
+                heading={item.name}
+                value={`${item.name} (id:${id})`}
+            >
                 <RenderList items={item.items} onSelect={onSelect} />
             </CommandBase.Group>
         );
     }
 
     if (item.type === "separator") {
-        return <CommandBase.Separator />;
+        return <CommandBase.Separator id={id} />;
     }
 
     item satisfies never;
