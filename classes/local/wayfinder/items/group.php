@@ -19,6 +19,7 @@ namespace local_wayfinder\local\wayfinder\items;
 use core\lang_string;
 use local_wayfinder\local\wayfinder\item;
 use local_wayfinder\output\renderer;
+use function count;
 
 /**
  * Group.
@@ -52,6 +53,12 @@ class group extends item {
         parent::__construct($renderer);
         $this->name = $name;
         $this->items = $items;
+    }
+
+    #[\Override]
+    public function check_access(): bool {
+        $alloweditems = self::filter_access($this->items);
+        return count($alloweditems) > 0;
     }
 
     /**

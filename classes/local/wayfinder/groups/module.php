@@ -47,6 +47,10 @@ class module extends group {
 
     #[\Override]
     public function check_access(): bool {
-        return (bool) $this->items && $this->get_context(\core\context\module::class) !== null;
+        if (!$this->get_context(\core\context\module::class)) {
+            return false;
+        }
+
+        return parent::check_access();
     }
 }

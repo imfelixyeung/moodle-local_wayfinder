@@ -47,6 +47,10 @@ class course extends group {
 
     #[\Override]
     public function check_access(): bool {
-        return (bool) $this->items && $this->get_context_course() !== null;
+        if (!$this->get_context_course()) {
+            return false;
+        }
+
+        return parent::check_access();
     }
 }
