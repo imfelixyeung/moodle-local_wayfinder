@@ -9,7 +9,13 @@ import {
     PlayIcon,
     SearchIcon,
 } from "lucide-react";
-import {HotkeysProvider, RawHotkey, useHotkey} from "@tanstack/react-hotkeys";
+import {
+    formatForDisplay,
+    HotkeysProvider,
+    RawHotkey,
+    RegisterableHotkey,
+    useHotkey,
+} from "@tanstack/react-hotkeys";
 import {
     StringsProvider,
     useStrings,
@@ -239,23 +245,21 @@ export default function Wayfinder(props: Props) {
                             aria-label={strings["cmdk:shortcuts"]}
                         >
                             <div className="wayfinder-shortcut" role="listitem">
-                                <kbd>{strings["cmdk:keys:enter"]}</kbd>{" "}
+                                <RenderHotkey hotkey="Enter" />{" "}
                                 {strings["cmdk:shortcuts:enter:label"]}
                             </div>
                             <div className="wayfinder-shortcut" role="listitem">
-                                <kbd>{strings["cmdk:keys:arrowup"]}</kbd>
+                                <RenderHotkey hotkey="ArrowUp" />
                                 {strings["cmdk:shortcuts:combination:or"]}
-                                <kbd>{strings["cmdk:keys:arrowdown"]}</kbd>{" "}
+                                <RenderHotkey hotkey="ArrowDown" />{" "}
                                 {strings["cmdk:shortcuts:updown:label"]}
                             </div>
                             <div className="wayfinder-shortcut" role="listitem">
-                                <kbd>{strings["cmdk:keys:escape"]}</kbd>{" "}
+                                <RenderHotkey hotkey="Escape" />{" "}
                                 {strings["cmdk:shortcuts:close:label"]}
                             </div>
                             <div className="wayfinder-shortcut" role="listitem">
-                                <kbd>{strings["cmdk:modifiers:mod"]}</kbd>
-                                {strings["cmdk:shortcuts:combination:and"]}
-                                <kbd>{strings["cmdk:keys:keyk"]}</kbd>{" "}
+                                <RenderHotkey hotkey="Mod+K" />{" "}
                                 {strings["cmdk:shortcuts:open:label"]}
                             </div>
                         </div>
@@ -389,56 +393,17 @@ RenderListItem.Icon = ({item}: {item: ListItem}) => {
 
 const RenderHotkey = ({
     hotkey,
-    label,
-    combination = "and",
     ...rest
 }: {
-    hotkey: RawHotkey;
-    label?: string;
-    combination?: "and" | "or";
-} & React.ComponentProps<"div">) => {
+    hotkey: RegisterableHotkey;
+} & React.ComponentProps<"kbd">) => {
     const strings = useStrings();
-    const parts = React.useMemo(() => {
-        const parts: string[] = [];
-        if (hotkey.mod) {
-            parts.push(strings["cmdk:modifiers:mod"]);
-        }
-        if (hotkey.ctrl) {
-            parts.push(strings["cmdk:modifiers:ctrl"]);
-        }
-        if (hotkey.shift) {
-            parts.push(strings["cmdk:modifiers:shift"]);
-        }
-        if (hotkey.alt) {
-            parts.push(strings["cmdk:modifiers:alt"]);
-        }
-        if (hotkey.meta) {
-            parts.push(strings["cmdk:modifiers:meta"]);
-        }
-        parts.push(hotkey.key);
-        return parts;
-    }, [hotkey, strings]);
-
     return (
-        <div className="wayfinder-shortcut" {...rest}>
-            {parts.map((part, index, parts) => {
-                const isLast = parts.length - 1 === index;
-                const combinationString =
-                    combination === "and"
-                        ? strings["cmdk:shortcuts:combination:and"]
-                        : strings["cmdk:shortcuts:combination:or"];
-                return (
-                    <>
-                        <kbd>{part}</kbd>
-                        {!isLast ? (
-                            <span className="wayfinder-shortcut-combination">
-                                {combinationString}
-                            </span>
-                        ) : null}
-                    </>
-                );
-            })}{" "}
-            {label && <span className="wayfinder-shortcut-label">{label}</span>}
-        </div>
+        <kbd {...rest}>
+            {formatForDisplay(hotkey, {
+                separatorToken: strings["cmdk:shortcuts:combination:and"],
+                useSymbols: false,
+            })}
+        </kbd>
     );
 };
