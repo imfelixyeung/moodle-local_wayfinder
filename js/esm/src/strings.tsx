@@ -1,3 +1,5 @@
+import {ComponentProps, createContext, useContext} from "react";
+
 export const requiredLanguageStrings = [
     "cmdk:back",
     "cmdk:dialog:label",
@@ -23,3 +25,18 @@ export const requiredLanguageStrings = [
 ] as const;
 export type RequiredLanguageString = (typeof requiredLanguageStrings)[number];
 export type RequiredLanguageStrings = Record<RequiredLanguageString, string>;
+
+const StringsContext = createContext({} as RequiredLanguageStrings);
+
+export const StringsProvider = ({
+    strings,
+    ...rest
+}: {
+    strings: RequiredLanguageStrings;
+} & Omit<ComponentProps<typeof StringsContext>, "value">) => {
+    return <StringsContext value={strings} {...rest} />;
+};
+
+export const useStrings = () => {
+    return useContext(StringsContext);
+};

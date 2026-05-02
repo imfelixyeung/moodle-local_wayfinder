@@ -10,7 +10,7 @@ import {
     SearchIcon,
 } from "lucide-react";
 import {HotkeysProvider, RawHotkey, useHotkey} from "@tanstack/react-hotkeys";
-import {type RequiredLanguageStrings} from "./strings";
+import {StringsProvider, type RequiredLanguageStrings} from "./strings";
 
 type BaseAction = {
     type: "action";
@@ -172,90 +172,92 @@ export default function Wayfinder(props: Props) {
                 hotkey: {preventDefault: true, ignoreInputs: false},
             }}
         >
-            <a
-                href="#"
-                className="nav-link icon-no-margin"
-                onClick={openPalette}
-                dangerouslySetInnerHTML={{__html: props.icon.html}}
-            />
-            <CommandBase.Dialog
-                onKeyDown={onKeyDown}
-                open={open}
-                onOpenChange={onDialogOpenChange}
-                label={strings["cmdk:dialog:label"]}
-                overlayClassName="wayfinder-overlay"
-                contentClassName="wayfinder-content"
-                value={value}
-                onValueChange={setValue}
-            >
-                <div wayfind-search="">
-                    {previousPage ? (
-                        <button wayfinder-back-button="" onClick={pageBack}>
-                            <span className="sr-only">
-                                {strings["cmdk:back"]}
-                            </span>
-                            <ArrowLeftIcon
-                                wayfinder-back-icon=""
+            <StringsProvider strings={strings}>
+                <a
+                    href="#"
+                    className="nav-link icon-no-margin"
+                    onClick={openPalette}
+                    dangerouslySetInnerHTML={{__html: props.icon.html}}
+                />
+                <CommandBase.Dialog
+                    onKeyDown={onKeyDown}
+                    open={open}
+                    onOpenChange={onDialogOpenChange}
+                    label={strings["cmdk:dialog:label"]}
+                    overlayClassName="wayfinder-overlay"
+                    contentClassName="wayfinder-content"
+                    value={value}
+                    onValueChange={setValue}
+                >
+                    <div wayfind-search="">
+                        {previousPage ? (
+                            <button wayfinder-back-button="" onClick={pageBack}>
+                                <span className="sr-only">
+                                    {strings["cmdk:back"]}
+                                </span>
+                                <ArrowLeftIcon
+                                    wayfinder-back-icon=""
+                                    aria-hidden={true}
+                                    size={16}
+                                />
+                            </button>
+                        ) : (
+                            <SearchIcon
+                                wayfind-search-icon=""
                                 aria-hidden={true}
                                 size={16}
                             />
-                        </button>
-                    ) : (
-                        <SearchIcon
-                            wayfind-search-icon=""
-                            aria-hidden={true}
-                            size={16}
+                        )}
+                        <CommandBase.Input
+                            placeholder={strings["cmdk:input:placeholder"]}
+                            value={input}
+                            onValueChange={setInput}
+                            // Annoyingly theme/boost/amd/src/aria.js comboboxFix() messes with cmdk,
+                            // this is a hacky way to bypass the element matching,
+                            // [role="combobox"][aria-controls]:not([aria-haspopup=dialog])
+                            // but means accessibility becomes questionable.
+                            aria-haspopup="dialog"
                         />
-                    )}
-                    <CommandBase.Input
-                        placeholder={strings["cmdk:input:placeholder"]}
-                        value={input}
-                        onValueChange={setInput}
-                        // Annoyingly theme/boost/amd/src/aria.js comboboxFix() messes with cmdk,
-                        // this is a hacky way to bypass the element matching,
-                        // [role="combobox"][aria-controls]:not([aria-haspopup=dialog])
-                        // but means accessibility becomes questionable.
-                        aria-haspopup="dialog"
-                    />
-                </div>
-                <CommandBase.List>
-                    <CommandBase.Empty>
-                        {strings["cmdk:results:empty"]}
-                    </CommandBase.Empty>
-                    <RenderList
-                        items={currentPage.items}
-                        onSelect={onCommandSelected}
-                    />
-                </CommandBase.List>
-                <section className="wayfinder-shortcuts-bar-wrapper">
-                    <div
-                        className="wayfinder-shortcuts-bar"
-                        role="list"
-                        aria-label={strings["cmdk:shortcuts"]}
-                    >
-                        <div className="wayfinder-shortcut" role="listitem">
-                            <kbd>{strings["cmdk:keys:enter"]}</kbd>{" "}
-                            {strings["cmdk:shortcuts:enter:label"]}
-                        </div>
-                        <div className="wayfinder-shortcut" role="listitem">
-                            <kbd>{strings["cmdk:keys:arrowup"]}</kbd>
-                            {strings["cmdk:shortcuts:combination:or"]}
-                            <kbd>{strings["cmdk:keys:arrowdown"]}</kbd>{" "}
-                            {strings["cmdk:shortcuts:updown:label"]}
-                        </div>
-                        <div className="wayfinder-shortcut" role="listitem">
-                            <kbd>{strings["cmdk:keys:escape"]}</kbd>{" "}
-                            {strings["cmdk:shortcuts:close:label"]}
-                        </div>
-                        <div className="wayfinder-shortcut" role="listitem">
-                            <kbd>{strings["cmdk:modifiers:mod"]}</kbd>
-                            {strings["cmdk:shortcuts:combination:and"]}
-                            <kbd>{strings["cmdk:keys:keyk"]}</kbd>{" "}
-                            {strings["cmdk:shortcuts:open:label"]}
-                        </div>
                     </div>
-                </section>
-            </CommandBase.Dialog>
+                    <CommandBase.List>
+                        <CommandBase.Empty>
+                            {strings["cmdk:results:empty"]}
+                        </CommandBase.Empty>
+                        <RenderList
+                            items={currentPage.items}
+                            onSelect={onCommandSelected}
+                        />
+                    </CommandBase.List>
+                    <section className="wayfinder-shortcuts-bar-wrapper">
+                        <div
+                            className="wayfinder-shortcuts-bar"
+                            role="list"
+                            aria-label={strings["cmdk:shortcuts"]}
+                        >
+                            <div className="wayfinder-shortcut" role="listitem">
+                                <kbd>{strings["cmdk:keys:enter"]}</kbd>{" "}
+                                {strings["cmdk:shortcuts:enter:label"]}
+                            </div>
+                            <div className="wayfinder-shortcut" role="listitem">
+                                <kbd>{strings["cmdk:keys:arrowup"]}</kbd>
+                                {strings["cmdk:shortcuts:combination:or"]}
+                                <kbd>{strings["cmdk:keys:arrowdown"]}</kbd>{" "}
+                                {strings["cmdk:shortcuts:updown:label"]}
+                            </div>
+                            <div className="wayfinder-shortcut" role="listitem">
+                                <kbd>{strings["cmdk:keys:escape"]}</kbd>{" "}
+                                {strings["cmdk:shortcuts:close:label"]}
+                            </div>
+                            <div className="wayfinder-shortcut" role="listitem">
+                                <kbd>{strings["cmdk:modifiers:mod"]}</kbd>
+                                {strings["cmdk:shortcuts:combination:and"]}
+                                <kbd>{strings["cmdk:keys:keyk"]}</kbd>{" "}
+                                {strings["cmdk:shortcuts:open:label"]}
+                            </div>
+                        </div>
+                    </section>
+                </CommandBase.Dialog>
+            </StringsProvider>
         </HotkeysProvider>
     );
 }
