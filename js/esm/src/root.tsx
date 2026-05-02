@@ -9,7 +9,7 @@ import {
     PlayIcon,
     SearchIcon,
 } from "lucide-react";
-import {useHotkey} from "@tanstack/react-hotkeys";
+import {HotkeysProvider, RawHotkey, useHotkey} from "@tanstack/react-hotkeys";
 import {type RequiredLanguageStrings} from "./strings";
 
 type BaseAction = {
@@ -45,6 +45,7 @@ type Command = {
     description: string | null;
     keywords: string[] | null;
     action: Action | null;
+    hotkey: RawHotkey | null;
 };
 
 type Group = {
@@ -57,6 +58,7 @@ type Page = Omit<Command, "action" | "subtype"> & {
     subtype: "page";
     items: ListItem[];
     action: SubmenuAction | null;
+    hotkey: RawHotkey | null;
 };
 
 type Separator = {
@@ -165,7 +167,11 @@ export default function Wayfinder(props: Props) {
     };
 
     return (
-        <>
+        <HotkeysProvider
+            defaultOptions={{
+                hotkey: {preventDefault: true, ignoreInputs: false},
+            }}
+        >
             <a
                 href="#"
                 className="nav-link icon-no-margin"
@@ -242,7 +248,7 @@ export default function Wayfinder(props: Props) {
                             {strings["cmdk:shortcuts:close:label"]}
                         </div>
                         <div className="wayfinder-shortcut" role="listitem">
-                            <kbd>{strings["cmdk:keys:modifier"]}</kbd>
+                            <kbd>{strings["cmdk:modifiers:mod"]}</kbd>
                             {strings["cmdk:shortcuts:combination:and"]}
                             <kbd>{strings["cmdk:keys:keyk"]}</kbd>{" "}
                             {strings["cmdk:shortcuts:open:label"]}
@@ -250,7 +256,7 @@ export default function Wayfinder(props: Props) {
                     </div>
                 </section>
             </CommandBase.Dialog>
-        </>
+        </HotkeysProvider>
     );
 }
 
@@ -278,18 +284,11 @@ const RenderListItem = ({
     const id = React.useId();
     if (item.type === "command") {
         return (
-            <CommandBase.Item
+            <RenderListItem.CommandOrPage
                 id={id}
-                onSelect={onSelect.bind(null, item)}
-                disabled={!item.subtype && !item.action}
-                keywords={item.keywords ?? undefined}
-                value={`${item.name} (id:${id})`}
-            >
-                <div className="wayfinder-item">
-                    <RenderListItem.Icon item={item} />
-                    <div>{item.name}</div>
-                </div>
-            </CommandBase.Item>
+                item={item}
+                onSelect={onSelect}
+            />
         );
     }
 
@@ -311,6 +310,38 @@ const RenderListItem = ({
 
     item satisfies never;
     return null;
+};
+
+RenderListItem.CommandOrPage = ({
+    id,
+    item,
+    onSelect,
+    ...rest
+}: {
+    item: Command | Page;
+    // eslint-disable-next-line no-unused-vars
+    onSelect: (item: ListItem) => void;
+} & Omit<React.ComponentProps<typeof CommandBase.Item>, "onSelect">) => {
+    const {hotkey} = item;
+
+    const onSelectBind = onSelect.bind(null, item);
+    useHotkey(hotkey ?? "Escape", onSelectBind, {enabled: !!hotkey});
+
+    return (
+        <CommandBase.Item
+            id={id}
+            onSelect={onSelect.bind(null, item)}
+            disabled={!item.subtype && !item.action}
+            keywords={item.keywords ?? undefined}
+            value={`${item.name} (id:${id})`}
+            {...rest}
+        >
+            <div className="wayfinder-item">
+                <RenderListItem.Icon item={item} />
+                <div>{item.name}</div>
+            </div>
+        </CommandBase.Item>
+    );
 };
 
 RenderListItem.Icon = ({item}: {item: ListItem}) => {

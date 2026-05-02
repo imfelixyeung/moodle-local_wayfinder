@@ -18,6 +18,7 @@ namespace local_wayfinder\local\wayfinder\items;
 
 use core\lang_string;
 use local_wayfinder\local\wayfinder\action;
+use local_wayfinder\local\wayfinder\hotkey;
 use local_wayfinder\local\wayfinder\item;
 
 /**
@@ -62,6 +63,14 @@ class command extends item {
     }
 
     /**
+     * Gets the description of the command.
+     * @return hotkey|null
+     */
+    public function get_hotkey(): ?hotkey {
+        return null;
+    }
+
+    /**
      * Gets the action of the command.
      * @return ?action
      */
@@ -80,6 +89,7 @@ class command extends item {
             'description' => (string) $this->get_description(),
             'keywords' => $this->get_keywords(),
             'action' => $this->get_action(),
+            'hotkey' => $this->get_hotkey(),
         ];
     }
 }
