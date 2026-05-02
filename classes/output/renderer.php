@@ -40,6 +40,7 @@ class renderer extends plugin_renderer_base {
 
         /** @var item[] $items */
         $items = [
+            new \local_wayfinder\local\wayfinder\groups\module($this),
             new \local_wayfinder\local\wayfinder\groups\course($this),
             new \local_wayfinder\local\wayfinder\items\group(
                 $this,
