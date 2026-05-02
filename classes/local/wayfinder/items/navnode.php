@@ -51,6 +51,11 @@ class navnode extends command {
     }
 
     #[\Override]
+    public function get_keywords(): array {
+        return [(string) $this->node->key];
+    }
+
+    #[\Override]
     public function check_access(): bool {
         return $this->node->display;
     }
