@@ -114,6 +114,7 @@
                 height: var(--wayfinder-search-icon-size);
                 width: var(--wayfinder-search-icon-size);
                 color: var(--wayfinder-search-icon-color);
+                flex-shrink: 0;
             }
 
             [wayfinder-back-button] {
@@ -127,6 +128,7 @@
                     height: var(--wayfinder-back-icon-size);
                     width: var(--wayfinder-back-icon-size);
                     color: var(--wayfinder-back-icon-color);
+                    flex-shrink: 0;
                 }
             }
 
