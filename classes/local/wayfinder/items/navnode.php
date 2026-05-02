@@ -14,42 +14,52 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_wayfinder\local\wayfinder\commands\course;
+namespace local_wayfinder\local\wayfinder\items;
 
 use core\lang_string;
+use core\navigation\navigation_node;
 use core\url;
 use local_wayfinder\local\wayfinder\action;
 use local_wayfinder\local\wayfinder\actions\redirect;
 use local_wayfinder\local\wayfinder\items\command;
+use local_wayfinder\output\renderer;
 
 /**
- * Course reports.
+ * Navigation node as a command.
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class reports extends command {
+class navnode extends command {
+    /** @var navigation_node $node */
+    protected navigation_node $node;
+
+    /**
+     * Constructor.
+     * @param renderer $renderer
+     */
+    public function __construct(renderer $renderer, navigation_node $node) {
+        parent::__construct($renderer);
+        $this->node = $node;
+    }
+
     #[\Override]
-    public function get_name(): lang_string {
-        return new lang_string('reports');
+    public function get_name(): string {
+        return $this->node->text ?? $this->node->get_title() ?? new lang_string('unknown');
     }
 
     #[\Override]
     public function check_access(): bool {
-        $context = $this->get_context_course();
-        if (!$context) {
-            return false;
-        }
-        return true;
+        return $this->node->display;
     }
 
     #[\Override]
     public function get_action(): ?action {
-        $context = $this->get_context_course();
-        if (!$context) {
+        $url = $this->node->action();
+        if (!($url instanceof url)) {
             return null;
         }
-        return new redirect(new url('/report/view.php', ['courseid' => $context->instanceid]));
+        return new redirect($url);
     }
 }

@@ -14,42 +14,34 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_wayfinder\local\wayfinder\commands\course;
+namespace local_wayfinder\local\wayfinder\groups;
 
 use core\lang_string;
-use core\url;
-use local_wayfinder\local\wayfinder\action;
-use local_wayfinder\local\wayfinder\actions\redirect;
-use local_wayfinder\local\wayfinder\items\command;
+use local_wayfinder\local\wayfinder\items\navnode;
+use local_wayfinder\local\wayfinder\items\group;
+use local_wayfinder\output\renderer;
 
 /**
- * Course settings.
+ * Course group.
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class settings extends command {
-    #[\Override]
-    public function get_name(): lang_string {
-        return new lang_string('settings');
-    }
+class course extends group {
+    /**
+     * Constructor.
+     * @param renderer $renderer
+     */
+    public function __construct(renderer $renderer) {
+        $items = [];
 
-    #[\Override]
-    public function check_access(): bool {
-        $context = $this->get_context_course();
-        if (!$context) {
-            return false;
-        }
-        return has_capability('moodle/course:update', $context);
-    }
+        $nodes = $renderer->get_page()->secondarynav->children;
 
-    #[\Override]
-    public function get_action(): ?action {
-        $context = $this->get_context_course();
-        if (!$context) {
-            return null;
+        foreach ($nodes as $node) {
+            $items[] = new navnode($renderer, $node);
         }
-        return new redirect(new url('/course/edit.php', ['id' => $context->instanceid]));
+
+        parent::__construct($renderer, new lang_string('course'), $items);
     }
 }
