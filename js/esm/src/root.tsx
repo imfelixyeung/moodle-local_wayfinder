@@ -2,6 +2,7 @@ import * as React from "react";
 
 import {Command as CommandBase} from "cmdk";
 import {
+    ArrowLeftIcon,
     ChevronRight,
     DotIcon,
     Link2Icon,
@@ -182,11 +183,21 @@ export default function Wayfinder(props: Props) {
                 onValueChange={setValue}
             >
                 <div wayfind-search="">
-                    <SearchIcon
-                        wayfind-search-icon=""
-                        aria-hidden={true}
-                        size={16}
-                    />
+                    {previousPage ? (
+                        <button wayfinder-back-button="" onClick={pageBack}>
+                            <ArrowLeftIcon
+                                wayfinder-back-icon=""
+                                aria-hidden={true}
+                                size={16}
+                            />
+                        </button>
+                    ) : (
+                        <SearchIcon
+                            wayfind-search-icon=""
+                            aria-hidden={true}
+                            size={16}
+                        />
+                    )}
                     <CommandBase.Input
                         placeholder={strings["cmdk:input:placeholder"]}
                         value={input}

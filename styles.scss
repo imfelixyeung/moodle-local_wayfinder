@@ -32,6 +32,9 @@
         --wayfinder-search-icon-size: 1.25rem;
         --wayfinder-search-icon-color: var(--wayfinder-secondary-color);
 
+        --wayfinder-back-icon-size: 1.25rem;
+        --wayfinder-back-icon-color: var(--wayfinder-secondary-color);
+
         --wayfinder-input-padding-x: 1.25rem;
         --wayfinder-input-padding-y: 1rem;
         --wayfinder-input-font-size: 1.125rem;
@@ -111,6 +114,20 @@
                 height: var(--wayfinder-search-icon-size);
                 width: var(--wayfinder-search-icon-size);
                 color: var(--wayfinder-search-icon-color);
+            }
+
+            [wayfinder-back-button] {
+                background-color: transparent;
+                outline: none;
+                border: none;
+                padding: 0;
+                margin: 0;
+
+                [wayfinder-back-icon] {
+                    height: var(--wayfinder-back-icon-size);
+                    width: var(--wayfinder-back-icon-size);
+                    color: var(--wayfinder-back-icon-color);
+                }
             }
 
             [cmdk-input] {
