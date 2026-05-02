@@ -1,0 +1,274 @@
+@layer wayfinder {
+
+    :root {
+        --wayfinder-body-bg: var(--bs-body-bg);
+        --wayfinder-body-color: var(--bs-body-color);
+        --wayfinder-body-border-rgb: var(--bs-body-border-rgb);
+        --wayfinder-border-color: var(--bs-border-color);
+        --wayfinder-secondary-color: var(--bs-secondary-color);
+        --wayfinder-tertiary-bg: var(--bs-tertiary-bg);
+        --wayfinder-primary: var(--bs-primary);
+        --wayfinder-light: var(--bs-light);
+
+        --wayfinder-overlay-background: rgba(0, 0, 0, 0.5);
+        --wayfinder-overlay-blur: blur(4px);
+        --wayfinder-overlay-z-index: 99990;
+        --wayfinder-overlay-animation: fadeIn 0.15s ease-out;
+
+        --wayfinder-content-z-index: 99999;
+        --wayfinder-content-padding-top: 15vh;
+        --wayfinder-content-max-width: 40rem;
+        --wayfinder-content-border-radius: 12px;
+        --wayfinder-content-max-height: 24rem;
+        --wayfinder-content-box-shadow:
+            0 0 0 1px rgba(var(--wayfinder-body-border-rgb), 0.1),
+            0 16px 70px rgba(0, 0, 0, 0.5);
+        --wayfinder-content-animation: scaleIn 0.15s ease-out;
+
+        --wayfinder-search-padding-x: 1rem;
+        --wayfinder-search-padding-y: 0;
+        --wayfinder-search-border-bottom: 1px solid var(--wayfinder-border-color);
+
+        --wayfinder-search-icon-size: 1.25rem;
+        --wayfinder-search-icon-color: var(--wayfinder-secondary-color);
+
+        --wayfinder-back-icon-size: 1.25rem;
+        --wayfinder-back-icon-color: var(--wayfinder-secondary-color);
+
+        --wayfinder-input-padding-x: 1.25rem;
+        --wayfinder-input-padding-y: 1rem;
+        --wayfinder-input-font-size: 1.125rem;
+
+        --wayfinder-list-max-height: 18rem;
+        --wayfinder-list-padding: 0.5rem;
+        --wayfinder-list-scrollbar-width: 6px;
+        --wayfinder-list-scrollbar-thumb-radius: 3px;
+
+        --wayfinder-empty-padding: 2rem;
+        --wayfinder-empty-font-size: 0.875rem;
+
+        --wayfinder-item-padding-x: 0.875rem;
+        --wayfinder-item-padding-y: 0.625rem;
+        --wayfinder-item-border-radius: 8px;
+        --wayfinder-item-font-size: 0.9375rem;
+        --wayfinder-item-gap: 0.75rem;
+        --wayfinder-item-transition: all 0.1s ease;
+
+        --wayfinder-group-heading-padding-x: 0.875rem;
+        --wayfinder-group-heading-padding-y: 0.5rem 0.25rem;
+        --wayfinder-group-heading-font-size: 0.75rem;
+        --wayfinder-group-heading-letter-spacing: 0.05em;
+        --wayfinder-group-heading-font-weight: 600;
+
+        --wayfinder-shortcut-gap: 0.25rem;
+        --wayfinder-shortcut-min-width: 1.5rem;
+        --wayfinder-shortcut-height: 1.5rem;
+        --wayfinder-shortcut-padding-x: 0.375rem;
+        --wayfinder-shortcut-font-size: 0.6875rem;
+        --wayfinder-shortcut-border-radius: 4px;
+        --wayfinder-shortcut-bar-border-top: 1px solid var(--wayfinder-border-color);
+    }
+
+    .wayfinder-overlay {
+        position: fixed;
+        inset: 0;
+        background-color: var(--wayfinder-overlay-background);
+        backdrop-filter: var(--wayfinder-overlay-blur);
+        z-index: var(--wayfinder-overlay-z-index);
+        animation: var(--wayfinder-overlay-animation);
+    }
+
+    .wayfinder-content {
+        position: fixed;
+        inset: 0;
+        z-index: var(--wayfinder-content-z-index);
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding-top: var(--wayfinder-content-padding-top);
+        width: 100%;
+        max-width: var(--wayfinder-content-max-width);
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+
+        [cmdk-root] {
+            background-color: var(--wayfinder-body-bg);
+            border-radius: var(--wayfinder-content-border-radius);
+            width: 100%;
+            max-height: var(--wayfinder-content-max-height);
+            box-shadow: var(--wayfinder-content-box-shadow);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            animation: var(--wayfinder-content-animation);
+        }
+
+        [wayfind-search] {
+            display: flex;
+            align-items: center;
+            padding: var(--wayfinder-search-padding-y) var(--wayfinder-search-padding-x);
+            border-bottom: var(--wayfinder-search-border-bottom);
+
+            [wayfind-search-icon] {
+                height: var(--wayfinder-search-icon-size);
+                width: var(--wayfinder-search-icon-size);
+                color: var(--wayfinder-search-icon-color);
+                flex-shrink: 0;
+            }
+
+            [wayfinder-back-button] {
+                background-color: transparent;
+                outline: none;
+                border: none;
+                padding: 0;
+                margin: 0;
+
+                [wayfinder-back-icon] {
+                    height: var(--wayfinder-back-icon-size);
+                    width: var(--wayfinder-back-icon-size);
+                    color: var(--wayfinder-back-icon-color);
+                    flex-shrink: 0;
+                }
+            }
+
+            [cmdk-input] {
+                width: 100%;
+                padding: var(--wayfinder-input-padding-y) var(--wayfinder-input-padding-x);
+                font-size: var(--wayfinder-input-font-size);
+                background: transparent;
+                border: none;
+                color: var(--wayfinder-body-color);
+                outline: none;
+                font-family: inherit;
+
+                &::placeholder {
+                    color: var(--wayfinder-secondary-color);
+                }
+            }
+        }
+
+
+        [cmdk-list] {
+            max-height: var(--wayfinder-list-max-height);
+            overflow-y: auto;
+            padding: var(--wayfinder-list-padding);
+            scrollbar-width: thin;
+            scrollbar-color: var(--wayfinder-border-color) transparent;
+
+            &::-webkit-scrollbar {
+                width: var(--wayfinder-list-scrollbar-width);
+            }
+
+            &::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: var(--wayfinder-border-color);
+                border-radius: var(--wayfinder-list-scrollbar-thumb-radius);
+            }
+        }
+
+        [cmdk-empty] {
+            padding: var(--wayfinder-empty-padding);
+            text-align: center;
+            color: var(--wayfinder-secondary-color);
+            font-size: var(--wayfinder-empty-font-size);
+        }
+
+        [cmdk-separator] {
+            height: 1px;
+            background: var(--wayfinder-border-color);
+            margin: 0.5rem 0;
+        }
+
+        [cmdk-item] {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--wayfinder-item-padding-y) var(--wayfinder-item-padding-x);
+            border-radius: var(--wayfinder-item-border-radius);
+            cursor: pointer;
+            color: var(--wayfinder-body-color);
+            transition: var(--wayfinder-item-transition);
+            font-size: var(--wayfinder-item-font-size);
+            gap: var(--wayfinder-item-gap);
+
+            .wayfinder-item {
+                display: flex;
+                align-items: center;
+                justify-content: start;
+                gap: var(--wayfinder-item-gap);
+            }
+
+            &[data-selected='true'] {
+                background-color: var(--wayfinder-primary);
+                color: var(--wayfinder-light);
+            }
+
+            &:not([data-selected='true']):hover {
+                background-color: var(--wayfinder-tertiary-bg);
+            }
+        }
+
+        [cmdk-group-heading] {
+            padding: var(--wayfinder-group-heading-padding-y) var(--wayfinder-group-heading-padding-x);
+            font-size: var(--wayfinder-group-heading-font-size);
+            text-transform: uppercase;
+            letter-spacing: var(--wayfinder-group-heading-letter-spacing);
+            color: var(--wayfinder-secondary-color);
+            font-weight: var(--wayfinder-group-heading-font-weight);
+        }
+
+        [cmdk-shortcut] {
+            display: flex;
+            gap: var(--wayfinder-shortcut-gap);
+        }
+    }
+
+    .wayfinder-shortcuts-bar {
+        display: flex;
+        gap: .25rem 1rem;
+        flex-wrap: wrap;
+        padding: var(--wayfinder-list-padding);
+        font-size: 0.75rem;
+        border-top: var(--wayfinder-shortcut-bar-border-top);
+    }
+
+    kbd {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: var(--wayfinder-shortcut-min-width);
+        height: var(--wayfinder-shortcut-height);
+        padding: 0 var(--wayfinder-shortcut-padding-x);
+        font-size: var(--wayfinder-shortcut-font-size);
+        font-family: inherit;
+        color: var(--wayfinder-secondary-color);
+        background: var(--wayfinder-tertiary-bg);
+        border-radius: var(--wayfinder-shortcut-border-radius);
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes scaleIn {
+        from {
+            opacity: 0;
+            transform: scale(0.96);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+}

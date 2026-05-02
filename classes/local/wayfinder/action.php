@@ -14,23 +14,37 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
+namespace local_wayfinder\local\wayfinder;
+
+use JsonSerializable;
+
 /**
- * Lib.
+ * Base wayfinder action.
+ *
+ * // phpcs:ignore moodle.Commenting.ValidTags.Invalid
+ * @phpstan-type action_json array{type:'action', id: string}
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+class action implements JsonSerializable {
+    /**
+     * Action unique id.
+     * @return string
+     */
+    protected static function get_id(): string {
+        return 'unknown';
+    }
 
-use core\output\renderer_base;
-
-/**
- * Adds the wayfinder component to navigation.
- * @param renderer_base $renderer
- * @return string
- */
-function local_wayfinder_render_navbar_output(renderer_base $renderer) {
-    /** @var \local_wayfinder\output\renderer $wayfinder */
-    $wayfinder = $renderer->get_page()->get_renderer('local_wayfinder');
-    return $wayfinder->render_root();
+    /**
+     * {@inheritDoc}
+     * @return action_json
+     */
+    public function jsonSerialize(): array {
+        return [
+            'type' => 'action',
+            'id' => $this->get_id(),
+        ];
+    }
 }

@@ -14,23 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
+namespace local_wayfinder\local\wayfinder\items;
+
+use local_wayfinder\local\wayfinder\item;
+
 /**
- * Lib.
+ * Separator.
+ *
+ * // phpcs:ignore moodle.Commenting.ValidTags.Invalid
+ * @phpstan-type separator_json array{type: 'separator'}
  *
  * @package   local_wayfinder
  * @copyright 2026 Felix Yeung
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-use core\output\renderer_base;
-
-/**
- * Adds the wayfinder component to navigation.
- * @param renderer_base $renderer
- * @return string
- */
-function local_wayfinder_render_navbar_output(renderer_base $renderer) {
-    /** @var \local_wayfinder\output\renderer $wayfinder */
-    $wayfinder = $renderer->get_page()->get_renderer('local_wayfinder');
-    return $wayfinder->render_root();
+class separator extends item {
+    /**
+     * {@inheritDoc}
+     * @return separator_json
+     */
+    public function jsonSerialize(): array {
+        return [
+            'type' => 'separator',
+        ];
+    }
 }

@@ -1,0 +1,105 @@
+<?php
+// This file is part of Moodle - https://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+namespace local_wayfinder\local\wayfinder\items;
+
+use core\lang_string;
+use local_wayfinder\local\wayfinder\action;
+use local_wayfinder\local\wayfinder\actions\submenu;
+use local_wayfinder\local\wayfinder\item;
+use local_wayfinder\output\renderer;
+
+/**
+ * Page.
+ *
+ * // phpcs:ignore moodle.Commenting.ValidTags.Invalid
+ * @phpstan-type page_json array{
+ *     type: 'command',
+ *     subtype: 'page',
+ *     name: string,
+ *     description: string|null,
+ *     keywords: string[]|null,
+ *     action: action|null,
+ *     items: item[],
+ * }
+ * @package   local_wayfinder
+ * @copyright 2026 Felix Yeung
+ * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class page extends command {
+    /**
+     * Name of the page.
+     * @var lang_string|string
+     */
+    protected lang_string|string $name;
+    /**
+     * Array of items to display.
+     * @var item[]
+     */
+    protected array $items;
+    /**
+     * If the page should use submenu action.
+     * This flag is used to prevent infinite recursions.
+     * @var bool
+     */
+    protected bool $hasactions;
+
+
+    /**
+     * Constructor.
+     * @param renderer $renderer
+     * @param lang_string|string $name
+     * @param item[] $items
+     * @param bool $hasactions
+     */
+    public function __construct(renderer $renderer, lang_string|string $name, array $items, bool $hasactions = true) {
+        parent::__construct($renderer);
+        $this->name = $name;
+        $this->items = $items;
+        $this->hasactions = $hasactions;
+    }
+
+    #[\Override]
+    public function get_name(): lang_string|string {
+        return $this->name;
+    }
+
+    #[\Override]
+    final public function get_action(): ?action {
+        return $this->hasactions && $this->items ? new submenu($this) : null;
+    }
+
+    /**
+     * Disables actions for this page.
+     * @return self
+     */
+    final public function disable_actions(): self {
+        $this->hasactions = false;
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @return page_json
+     */
+    public function jsonSerialize(): array {
+        return [
+            ...parent::jsonSerialize(),
+            'subtype' => 'page',
+            'items' => self::filter_access($this->items),
+        ];
+    }
+}

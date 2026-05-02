@@ -1,0 +1,64 @@
+<?php
+// This file is part of Moodle - https://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+namespace local_wayfinder\local\wayfinder\groups;
+
+use core\lang_string;
+use core\url;
+use local_wayfinder\local\wayfinder\items\link;
+use local_wayfinder\local\wayfinder\items\group;
+use local_wayfinder\local\wayfinder\items\separator;
+use local_wayfinder\output\renderer;
+
+/**
+ * User profile group.
+ *
+ * @package   local_wayfinder
+ * @copyright 2026 Felix Yeung
+ * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class profile extends group {
+    /**
+     * Constructor.
+     * @param renderer $renderer
+     */
+    public function __construct(renderer $renderer) {
+        global $USER;
+        $items = [];
+
+        $usernav = user_get_user_navigation_info($USER, $renderer->get_page());
+
+        /** @var object{itemtype: string, title: string, titleidentifier: string, url: url}[] $navitems */
+        $navitems = $usernav->navitems;
+
+        foreach ($navitems as $navitem) {
+            if ($navitem->itemtype === 'divider') {
+                $items[] = new separator($renderer);
+                continue;
+            }
+
+            if ($navitem->itemtype !== 'link') {
+                continue;
+            }
+
+            // It appears the titleidentifier is in form of {key},moodle, so we extract the key.
+            $keyword = explode(',', $navitem->titleidentifier)[0];
+            $items[] = new link($renderer, $navitem->title, $navitem->url, $keyword ? [$keyword] : null);
+        }
+
+        parent::__construct($renderer, new lang_string('myprofile'), $items);
+    }
+}

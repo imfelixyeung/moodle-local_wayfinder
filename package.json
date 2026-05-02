@@ -1,0 +1,19 @@
+{
+    "name": "wayfinder",
+    "version": "0.0.1",
+    "description": "",
+    "scripts": {
+        "css": "sass --no-source-map styles.scss:styles.css",
+        "css:watch": "sass --watch --no-source-map styles.scss:styles.css"
+    },
+    "keywords": [],
+    "author": "",
+    "dependencies": {
+        "@tanstack/react-hotkeys": "^0.10.0",
+        "cmdk": "^1.1.1",
+        "lucide-react": "^1.11.0"
+    },
+    "devDependencies": {
+        "sass": "^1.99.0"
+    }
+}
