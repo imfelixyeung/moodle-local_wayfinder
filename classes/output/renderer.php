@@ -64,6 +64,7 @@ class renderer extends plugin_renderer_base {
         );
 
         $stringidentifiers = [
+            'cmdk:back',
             'cmdk:dialog:label',
             'cmdk:input:placeholder',
             'cmdk:keys:arrowdown',

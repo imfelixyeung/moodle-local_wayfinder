@@ -24,6 +24,7 @@
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['cmdk:back'] = 'Back';
 $string['cmdk:dialog:label'] = 'Global search menu';
 $string['cmdk:input:placeholder'] = 'Start typing to search...';
 $string['cmdk:keys:arrowdown'] = 'Down';

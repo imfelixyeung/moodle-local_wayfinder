@@ -1,4 +1,5 @@
 export const requiredLanguageStrings = [
+    "cmdk:back",
     "cmdk:dialog:label",
     "cmdk:input:placeholder",
     "cmdk:keys:arrowdown",

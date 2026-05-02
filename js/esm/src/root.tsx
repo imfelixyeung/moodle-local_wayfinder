@@ -185,6 +185,9 @@ export default function Wayfinder(props: Props) {
                 <div wayfind-search="">
                     {previousPage ? (
                         <button wayfinder-back-button="" onClick={pageBack}>
+                            <span className="sr-only">
+                                {strings["cmdk:back"]}
+                            </span>
                             <ArrowLeftIcon
                                 wayfinder-back-icon=""
                                 aria-hidden={true}
