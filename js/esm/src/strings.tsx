@@ -4,7 +4,7 @@ export const requiredLanguageStrings = [
     "cmdk:input:placeholder",
     "cmdk:keys:arrowdown",
     "cmdk:keys:arrowup",
-    "cmdk:keys:control",
+    "cmdk:keys:modifier",
     "cmdk:keys:enter",
     "cmdk:keys:escape",
     "cmdk:keys:keyk",

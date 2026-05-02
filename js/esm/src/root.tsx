@@ -78,7 +78,7 @@ export default function Wayfinder(props: Props) {
     const [value, setValue] = React.useState("");
     const [input, setInput] = React.useState("");
     const openPalette = () => setOpen(true);
-    useHotkey("Control+K", openPalette, {enabled: !open});
+    useHotkey("Mod+K", openPalette, {enabled: !open});
     useHotkey("/", openPalette, {enabled: !open});
 
     const resetSearch = () => {
@@ -242,7 +242,7 @@ export default function Wayfinder(props: Props) {
                             {strings["cmdk:shortcuts:close:label"]}
                         </div>
                         <div className="wayfinder-shortcut" role="listitem">
-                            <kbd>{strings["cmdk:keys:control"]}</kbd>
+                            <kbd>{strings["cmdk:keys:modifier"]}</kbd>
                             {strings["cmdk:shortcuts:combination:and"]}
                             <kbd>{strings["cmdk:keys:keyk"]}</kbd>{" "}
                             {strings["cmdk:shortcuts:open:label"]}
