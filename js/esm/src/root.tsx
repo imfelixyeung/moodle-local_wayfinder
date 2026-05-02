@@ -10,7 +10,11 @@ import {
     SearchIcon,
 } from "lucide-react";
 import {HotkeysProvider, RawHotkey, useHotkey} from "@tanstack/react-hotkeys";
-import {StringsProvider, type RequiredLanguageStrings} from "./strings";
+import {
+    StringsProvider,
+    useStrings,
+    type RequiredLanguageStrings,
+} from "./strings";
 
 type BaseAction = {
     type: "action";
@@ -342,13 +346,7 @@ RenderListItem.CommandOrPage = ({
                 <RenderListItem.Icon item={item} />
                 <div>{item.name}</div>
             </div>
-            {hotkey && (
-                <RenderHotkey
-                    hotkey={hotkey}
-                    // TODO: Fix me.
-                    strings={{} as RequiredLanguageStrings}
-                />
-            )}
+            {hotkey && <RenderHotkey hotkey={hotkey} />}
         </CommandBase.Item>
     );
 };
@@ -392,13 +390,12 @@ RenderListItem.Icon = ({item}: {item: ListItem}) => {
 const RenderHotkey = ({
     hotkey,
     combination = "and",
-    strings,
     ...rest
 }: {
     hotkey: RawHotkey;
     combination?: "and" | "or";
-    strings: RequiredLanguageStrings;
 } & React.ComponentProps<"div">) => {
+    const strings = useStrings();
     const parts = React.useMemo(() => {
         const parts: string[] = [];
         if (hotkey.mod) {
