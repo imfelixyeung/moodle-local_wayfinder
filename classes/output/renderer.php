@@ -76,6 +76,26 @@ class renderer extends plugin_renderer_base {
             false
         );
 
+        $stringidentifiers = [
+            'cmdk:dialog:label',
+            'cmdk:input:placeholder',
+            'cmdk:keys:arrowdown',
+            'cmdk:keys:arrowup',
+            'cmdk:keys:control',
+            'cmdk:keys:enter',
+            'cmdk:keys:escape',
+            'cmdk:keys:keyk',
+            'cmdk:results:empty',
+            'cmdk:shortcuts',
+            'cmdk:shortcuts:close:label',
+            'cmdk:shortcuts:combination:and',
+            'cmdk:shortcuts:combination:or',
+            'cmdk:shortcuts:enter:label',
+            'cmdk:shortcuts:open:label',
+            'cmdk:shortcuts:updown:label',
+        ];
+        $strings = get_strings($stringidentifiers, 'local_wayfinder');
+
         return html_writer::tag(
             'wayfinder-root',
             $skeleton,
@@ -83,11 +103,7 @@ class renderer extends plugin_renderer_base {
                 'data-react-component' => '@moodle/lms/local_wayfinder/root',
                 'data-react-props' => json_encode([
                     'icon' => ['html' => $this->render(new pix_icon('a/search', get_string('search')))],
-                    'strings' => [
-                        'cmdk:dialog:label' => get_string('cmdk:dialog:label', 'local_wayfinder'),
-                        'cmdk:input:placeholder' => get_string('cmdk:input:placeholder', 'local_wayfinder'),
-                        'cmdk:results:empty' => get_string('cmdk:results:empty', 'local_wayfinder'),
-                    ],
+                    'strings' => $strings,
                     'root' => $root,
                 ]),
             ]

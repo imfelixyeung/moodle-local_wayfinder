@@ -71,6 +71,7 @@ type Props = {
 };
 
 export default function Wayfinder(props: Props) {
+    const {strings} = props;
     const [pages, setPages] = React.useState(() => [props.root]);
     const [open, setOpen] = React.useState(false);
     const [value, setValue] = React.useState("");
@@ -174,7 +175,7 @@ export default function Wayfinder(props: Props) {
                 onKeyDown={onKeyDown}
                 open={open}
                 onOpenChange={onDialogOpenChange}
-                label={props.strings["cmdk:dialog:label"]}
+                label={strings["cmdk:dialog:label"]}
                 overlayClassName="wayfinder-overlay"
                 contentClassName="wayfinder-content"
                 value={value}
@@ -187,7 +188,7 @@ export default function Wayfinder(props: Props) {
                         size={16}
                     />
                     <CommandBase.Input
-                        placeholder={props.strings["cmdk:input:placeholder"]}
+                        placeholder={strings["cmdk:input:placeholder"]}
                         value={input}
                         onValueChange={setInput}
                         // Annoyingly theme/boost/amd/src/aria.js comboboxFix() messes with cmdk,
@@ -199,13 +200,41 @@ export default function Wayfinder(props: Props) {
                 </div>
                 <CommandBase.List>
                     <CommandBase.Empty>
-                        {props.strings["cmdk:results:empty"]}
+                        {strings["cmdk:results:empty"]}
                     </CommandBase.Empty>
                     <RenderList
                         items={currentPage.items}
                         onSelect={onCommandSelected}
                     />
                 </CommandBase.List>
+                <section className="wayfinder-shortcuts-bar-wrapper">
+                    <div
+                        className="wayfinder-shortcuts-bar"
+                        role="list"
+                        aria-label={strings["cmdk:shortcuts"]}
+                    >
+                        <div className="wayfinder-shortcut" role="listitem">
+                            <kbd>{strings["cmdk:keys:enter"]}</kbd>{" "}
+                            {strings["cmdk:shortcuts:enter:label"]}
+                        </div>
+                        <div className="wayfinder-shortcut" role="listitem">
+                            <kbd>{strings["cmdk:keys:arrowup"]}</kbd>
+                            {strings["cmdk:shortcuts:combination:or"]}
+                            <kbd>{strings["cmdk:keys:arrowdown"]}</kbd>{" "}
+                            {strings["cmdk:shortcuts:updown:label"]}
+                        </div>
+                        <div className="wayfinder-shortcut" role="listitem">
+                            <kbd>{strings["cmdk:keys:escape"]}</kbd>{" "}
+                            {strings["cmdk:shortcuts:close:label"]}
+                        </div>
+                        <div className="wayfinder-shortcut" role="listitem">
+                            <kbd>{strings["cmdk:keys:control"]}</kbd>
+                            {strings["cmdk:shortcuts:combination:and"]}
+                            <kbd>{strings["cmdk:keys:keyk"]}</kbd>{" "}
+                            {strings["cmdk:shortcuts:open:label"]}
+                        </div>
+                    </div>
+                </section>
             </CommandBase.Dialog>
         </>
     );

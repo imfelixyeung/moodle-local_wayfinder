@@ -63,6 +63,7 @@
         --wayfinder-shortcut-padding-x: 0.375rem;
         --wayfinder-shortcut-font-size: 0.6875rem;
         --wayfinder-shortcut-border-radius: 4px;
+        --wayfinder-shortcut-bar-border-top: 1px solid var(--wayfinder-border-color);
     }
 
     .wayfinder-overlay {
@@ -204,21 +205,30 @@
         [cmdk-shortcut] {
             display: flex;
             gap: var(--wayfinder-shortcut-gap);
-
-            kbd {
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                min-width: var(--wayfinder-shortcut-min-width);
-                height: var(--wayfinder-shortcut-height);
-                padding: 0 var(--wayfinder-shortcut-padding-x);
-                font-size: var(--wayfinder-shortcut-font-size);
-                font-family: inherit;
-                color: var(--wayfinder-secondary-color);
-                background: var(--wayfinder-tertiary-bg);
-                border-radius: var(--wayfinder-shortcut-border-radius);
-            }
         }
+    }
+
+    .wayfinder-shortcuts-bar {
+        display: flex;
+        gap: .25rem 1rem;
+        flex-wrap: wrap;
+        padding: var(--wayfinder-list-padding);
+        font-size: 0.75rem;
+        border-top: var(--wayfinder-shortcut-bar-border-top);
+    }
+
+    kbd {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: var(--wayfinder-shortcut-min-width);
+        height: var(--wayfinder-shortcut-height);
+        padding: 0 var(--wayfinder-shortcut-padding-x);
+        font-size: var(--wayfinder-shortcut-font-size);
+        font-family: inherit;
+        color: var(--wayfinder-secondary-color);
+        background: var(--wayfinder-tertiary-bg);
+        border-radius: var(--wayfinder-shortcut-border-radius);
     }
 
     @keyframes fadeIn {

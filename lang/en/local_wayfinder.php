@@ -26,5 +26,18 @@
 
 $string['cmdk:dialog:label'] = 'Global search menu';
 $string['cmdk:input:placeholder'] = 'Start typing to search...';
+$string['cmdk:keys:arrowdown'] = 'Down';
+$string['cmdk:keys:arrowup'] = 'Up';
+$string['cmdk:keys:control'] = 'Ctrl';
+$string['cmdk:keys:enter'] = 'Enter';
+$string['cmdk:keys:escape'] = 'Escape';
+$string['cmdk:keys:keyk'] = 'K';
 $string['cmdk:results:empty'] = 'No matching results';
+$string['cmdk:shortcuts'] = 'Keyboard shortcuts';
+$string['cmdk:shortcuts:close:label'] = 'to close';
+$string['cmdk:shortcuts:combination:and'] = '+';
+$string['cmdk:shortcuts:combination:or'] = '/';
+$string['cmdk:shortcuts:enter:label'] = 'to confirm';
+$string['cmdk:shortcuts:open:label'] = 'to open';
+$string['cmdk:shortcuts:updown:label'] = 'to navigate';
 $string['pluginname'] = 'Wayfinder';
