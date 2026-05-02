@@ -175,6 +175,13 @@
             font-size: var(--wayfinder-item-font-size);
             gap: var(--wayfinder-item-gap);
 
+            .wayfinder-item {
+                display: flex;
+                align-items: center;
+                justify-content: start;
+                gap: var(--wayfinder-item-gap);
+            }
+
             &[data-selected='true'] {
                 background-color: var(--wayfinder-primary);
                 color: var(--wayfinder-light);

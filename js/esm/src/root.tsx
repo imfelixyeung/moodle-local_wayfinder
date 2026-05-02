@@ -1,7 +1,13 @@
 import * as React from "react";
 
 import {Command as CommandBase} from "cmdk";
-import {SearchIcon} from "lucide-react";
+import {
+    ChevronRight,
+    DotIcon,
+    Link2Icon,
+    PlayIcon,
+    SearchIcon,
+} from "lucide-react";
 import {useHotkey} from "@tanstack/react-hotkeys";
 import {type RequiredLanguageStrings} from "./strings";
 
@@ -233,7 +239,10 @@ const RenderListItem = ({
                 disabled={!item.subtype && !item.action}
                 keywords={item.keywords ?? undefined}
             >
-                {item.name}
+                <div className="wayfinder-item">
+                    <RenderListItem.Icon item={item} />
+                    <div>{item.name}</div>
+                </div>
             </CommandBase.Item>
         );
     }
@@ -252,4 +261,40 @@ const RenderListItem = ({
 
     item satisfies never;
     return null;
+};
+
+RenderListItem.Icon = ({item}: {item: ListItem}) => {
+    const Icon = React.useMemo(() => {
+        if (item.type !== "command") {
+            return DotIcon;
+        }
+
+        if (item.subtype === "page") {
+            return ChevronRight;
+        }
+
+        if (!item.action) {
+            return DotIcon;
+        }
+
+        if (item.action.id === "submenu") {
+            return ChevronRight;
+        }
+
+        if (item.action.id === "redirect") {
+            return Link2Icon;
+        }
+
+        if (item.action.id === "form") {
+            return PlayIcon;
+        }
+        item.action.id satisfies "unknown";
+        return null;
+    }, [item]);
+
+    if (!Icon) {
+        return null;
+    }
+
+    return <Icon size={16} aria-hidden={true} />;
 };
