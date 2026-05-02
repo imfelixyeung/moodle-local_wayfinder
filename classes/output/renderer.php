@@ -50,7 +50,7 @@ class renderer extends plugin_renderer_base {
                     new \local_wayfinder\local\wayfinder\commands\user\preferences($this),
                 ]
             ),
-            new \local_wayfinder\local\wayfinder\items\separator(),
+            new \local_wayfinder\local\wayfinder\items\separator($this),
             new \local_wayfinder\local\wayfinder\commands\reportbuilder\reports($this),
             new \local_wayfinder\local\wayfinder\commands\core\language($this),
             new \local_wayfinder\local\wayfinder\items\group(
@@ -66,6 +66,7 @@ class renderer extends plugin_renderer_base {
             ),
             new \local_wayfinder\local\wayfinder\commands\core\logout($this),
             new \local_wayfinder\local\wayfinder\items\group(
+                $this,
                 new lang_string('admin'),
                 [
                     new \local_wayfinder\local\wayfinder\commands\admin\root($this),

@@ -16,12 +16,9 @@
 
 namespace local_wayfinder\local\wayfinder\items;
 
-use core\context;
-use core\context\course;
 use core\lang_string;
 use local_wayfinder\local\wayfinder\action;
 use local_wayfinder\local\wayfinder\item;
-use local_wayfinder\output\renderer;
 
 /**
  * Base wayfinder command.
@@ -40,20 +37,6 @@ use local_wayfinder\output\renderer;
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class command extends item {
-    /**
-     * Wayfinder plugin renderer.
-     * @var renderer
-     */
-    protected renderer $renderer;
-
-    /**
-     * Constructor.
-     * @param renderer $renderer
-     */
-    public function __construct(renderer $renderer) {
-        $this->renderer = $renderer;
-    }
-
     /**
      * Gets the name of the command.
      * @return lang_string|string
@@ -84,29 +67,6 @@ class command extends item {
      */
     public function get_action(): ?action {
         return null;
-    }
-
-    /**
-     * Get context
-     * // phpcs:ignore
-     * @template T of context
-     * @param class-string<T> $context
-     * @return T|null
-     */
-    protected function get_context(string $context): ?context {
-        $pagecontext = $this->renderer->get_page()->context;
-        if (!($pagecontext instanceof $context)) {
-            return null;
-        }
-        return $pagecontext;
-    }
-
-    /**
-     * Gets course context.
-     * @return course|null
-     */
-    protected function get_context_course(): ?course {
-        return $this->get_context(course::class);
     }
 
     /**

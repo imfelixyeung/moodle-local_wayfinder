@@ -47,7 +47,7 @@ class category extends page {
                 new lang_string('admincategory', 'admin', $category->visiblename),
                 $category->get_settings_page_url(),
             ),
-            new separator(),
+            new separator($renderer),
         ];
         $children = $this->category->get_children();
         foreach ($children as $child) {

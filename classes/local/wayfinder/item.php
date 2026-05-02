@@ -16,7 +16,10 @@
 
 namespace local_wayfinder\local\wayfinder;
 
+use core\context;
+use core\context\course;
 use JsonSerializable;
+use local_wayfinder\output\renderer;
 
 /**
  * Base item.
@@ -26,6 +29,44 @@ use JsonSerializable;
  * @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 abstract class item implements JsonSerializable {
+    /**
+     * Wayfinder plugin renderer.
+     * @var renderer
+     */
+    protected renderer $renderer;
+
+    /**
+     * Constructor.
+     * @param renderer $renderer
+     */
+    public function __construct(renderer $renderer) {
+        $this->renderer = $renderer;
+    }
+
+
+    /**
+     * Get context
+     * // phpcs:ignore
+     * @template T of context
+     * @param class-string<T> $context
+     * @return T|null
+     */
+    protected function get_context(string $context): ?context {
+        $pagecontext = $this->renderer->get_page()->context;
+        if (!($pagecontext instanceof $context)) {
+            return null;
+        }
+        return $pagecontext;
+    }
+
+    /**
+     * Gets course context.
+     * @return course|null
+     */
+    protected function get_context_course(): ?course {
+        return $this->get_context(course::class);
+    }
+
     /**
      * Checks if the current user has access to this item.
      * @return bool

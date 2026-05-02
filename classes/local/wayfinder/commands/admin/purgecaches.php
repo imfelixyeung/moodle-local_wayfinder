@@ -48,7 +48,7 @@ class purgecaches extends command {
         $caches = ['theme', 'courses', 'lang', 'js', 'template', 'filter', 'muc', 'other'];
         $items = [
             new option($this->renderer, null),
-            new separator(),
+            new separator($this->renderer),
             ...array_map(fn(?string $cache) => new option($this->renderer, $cache), $caches),
         ];
         $page = new page($this->renderer, $this->get_name(), $items);

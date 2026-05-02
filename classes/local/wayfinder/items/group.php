@@ -18,6 +18,7 @@ namespace local_wayfinder\local\wayfinder\items;
 
 use core\lang_string;
 use local_wayfinder\local\wayfinder\item;
+use local_wayfinder\output\renderer;
 
 /**
  * Group.
@@ -43,10 +44,12 @@ class group extends item {
 
     /**
      * Constructor.
+     * @param renderer $renderer
      * @param lang_string $name
      * @param item[] $items
      */
-    public function __construct(lang_string $name, array $items) {
+    public function __construct(renderer $renderer, lang_string $name, array $items) {
+        parent::__construct($renderer);
         $this->name = $name;
         $this->items = $items;
     }
