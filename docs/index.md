@@ -2,7 +2,7 @@
 
 Cmd+K command palette for Moodle. Like Spotlight, VS Code palette, or Alfred -- but inside Moodle.
 
-![Wayfinder screenshot](screenshot.png)
+![Wayfinder screenshot](./screenshot.png)
 
 ## What It Does
 
