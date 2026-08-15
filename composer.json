@@ -1,5 +1,8 @@
 {
-    "name": "imfelixyeung/wayfinder",
+    "name": "moodlicious/moodle-local_wayfinder",
+    "description": "Cmd+K command palette for Moodle.",
+    "type": "moodle-local",
+    "license": "GPL-3.0-or-later",
     "authors": [
         {
             "name": "Felix Yeung",
