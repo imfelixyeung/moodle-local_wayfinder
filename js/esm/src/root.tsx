@@ -9,8 +9,18 @@ import {
     PlayIcon,
     SearchIcon,
 } from "lucide-react";
-import {useHotkey} from "@tanstack/react-hotkeys";
-import {StringsProvider, type RequiredLanguageStrings} from "./strings";
+import {
+    formatForDisplay,
+    HotkeysProvider,
+    RawHotkey,
+    RegisterableHotkey,
+    useHotkey,
+} from "@tanstack/react-hotkeys";
+import {
+    StringsProvider,
+    useStrings,
+    type RequiredLanguageStrings,
+} from "./strings";
 
 type BaseAction = {
     type: "action";
@@ -45,6 +55,7 @@ type Command = {
     description: string | null;
     keywords: string[] | null;
     action: Action | null;
+    hotkey: RawHotkey | null;
 };
 
 type Group = {
@@ -57,6 +68,7 @@ type Page = Omit<Command, "action" | "subtype"> & {
     subtype: "page";
     items: ListItem[];
     action: SubmenuAction | null;
+    hotkey: RawHotkey | null;
 };
 
 type Separator = {
@@ -78,7 +90,7 @@ export default function Wayfinder(props: Props) {
     const [value, setValue] = React.useState("");
     const [input, setInput] = React.useState("");
     const openPalette = () => setOpen(true);
-    useHotkey("Control+K", openPalette, {enabled: !open});
+    useHotkey("Mod+K", openPalette, {enabled: !open});
     useHotkey("/", openPalette, {enabled: !open});
 
     const resetSearch = () => {
@@ -165,92 +177,96 @@ export default function Wayfinder(props: Props) {
     };
 
     return (
-        <StringsProvider strings={strings}>
-            <a
-                href="#"
-                className="nav-link icon-no-margin"
-                onClick={openPalette}
-                dangerouslySetInnerHTML={{__html: props.icon.html}}
-            />
-            <CommandBase.Dialog
-                onKeyDown={onKeyDown}
-                open={open}
-                onOpenChange={onDialogOpenChange}
-                label={strings["cmdk:dialog:label"]}
-                overlayClassName="wayfinder-overlay"
-                contentClassName="wayfinder-content"
-                value={value}
-                onValueChange={setValue}
-            >
-                <div wayfind-search="">
-                    {previousPage ? (
-                        <button wayfinder-back-button="" onClick={pageBack}>
-                            <span className="sr-only">
-                                {strings["cmdk:back"]}
-                            </span>
-                            <ArrowLeftIcon
-                                wayfinder-back-icon=""
+        <HotkeysProvider
+            defaultOptions={{
+                hotkey: {preventDefault: true, ignoreInputs: false},
+            }}
+        >
+            <StringsProvider strings={strings}>
+                <a
+                    href="#"
+                    className="nav-link icon-no-margin"
+                    onClick={openPalette}
+                    dangerouslySetInnerHTML={{__html: props.icon.html}}
+                />
+                <CommandBase.Dialog
+                    onKeyDown={onKeyDown}
+                    open={open}
+                    onOpenChange={onDialogOpenChange}
+                    label={strings["cmdk:dialog:label"]}
+                    overlayClassName="wayfinder-overlay"
+                    contentClassName="wayfinder-content"
+                    value={value}
+                    onValueChange={setValue}
+                >
+                    <div wayfind-search="">
+                        {previousPage ? (
+                            <button wayfinder-back-button="" onClick={pageBack}>
+                                <span className="sr-only">
+                                    {strings["cmdk:back"]}
+                                </span>
+                                <ArrowLeftIcon
+                                    wayfinder-back-icon=""
+                                    aria-hidden={true}
+                                    size={16}
+                                />
+                            </button>
+                        ) : (
+                            <SearchIcon
+                                wayfind-search-icon=""
                                 aria-hidden={true}
                                 size={16}
                             />
-                        </button>
-                    ) : (
-                        <SearchIcon
-                            wayfind-search-icon=""
-                            aria-hidden={true}
-                            size={16}
+                        )}
+                        <CommandBase.Input
+                            placeholder={strings["cmdk:input:placeholder"]}
+                            value={input}
+                            onValueChange={setInput}
+                            // Annoyingly theme/boost/amd/src/aria.js comboboxFix() messes with cmdk,
+                            // this is a hacky way to bypass the element matching,
+                            // [role="combobox"][aria-controls]:not([aria-haspopup=dialog])
+                            // but means accessibility becomes questionable.
+                            aria-haspopup="dialog"
                         />
-                    )}
-                    <CommandBase.Input
-                        placeholder={strings["cmdk:input:placeholder"]}
-                        value={input}
-                        onValueChange={setInput}
-                        // Annoyingly theme/boost/amd/src/aria.js comboboxFix() messes with cmdk,
-                        // this is a hacky way to bypass the element matching,
-                        // [role="combobox"][aria-controls]:not([aria-haspopup=dialog])
-                        // but means accessibility becomes questionable.
-                        aria-haspopup="dialog"
-                    />
-                </div>
-                <CommandBase.List>
-                    <CommandBase.Empty>
-                        {strings["cmdk:results:empty"]}
-                    </CommandBase.Empty>
-                    <RenderList
-                        items={currentPage.items}
-                        onSelect={onCommandSelected}
-                    />
-                </CommandBase.List>
-                <section className="wayfinder-shortcuts-bar-wrapper">
-                    <div
-                        className="wayfinder-shortcuts-bar"
-                        role="list"
-                        aria-label={strings["cmdk:shortcuts"]}
-                    >
-                        <div className="wayfinder-shortcut" role="listitem">
-                            <kbd>{strings["cmdk:keys:enter"]}</kbd>{" "}
-                            {strings["cmdk:shortcuts:enter:label"]}
-                        </div>
-                        <div className="wayfinder-shortcut" role="listitem">
-                            <kbd>{strings["cmdk:keys:arrowup"]}</kbd>
-                            {strings["cmdk:shortcuts:combination:or"]}
-                            <kbd>{strings["cmdk:keys:arrowdown"]}</kbd>{" "}
-                            {strings["cmdk:shortcuts:updown:label"]}
-                        </div>
-                        <div className="wayfinder-shortcut" role="listitem">
-                            <kbd>{strings["cmdk:keys:escape"]}</kbd>{" "}
-                            {strings["cmdk:shortcuts:close:label"]}
-                        </div>
-                        <div className="wayfinder-shortcut" role="listitem">
-                            <kbd>{strings["cmdk:keys:control"]}</kbd>
-                            {strings["cmdk:shortcuts:combination:and"]}
-                            <kbd>{strings["cmdk:keys:keyk"]}</kbd>{" "}
-                            {strings["cmdk:shortcuts:open:label"]}
-                        </div>
                     </div>
-                </section>
-            </CommandBase.Dialog>
-        </StringsProvider>
+                    <CommandBase.List>
+                        <CommandBase.Empty>
+                            {strings["cmdk:results:empty"]}
+                        </CommandBase.Empty>
+                        <RenderList
+                            items={currentPage.items}
+                            onSelect={onCommandSelected}
+                        />
+                    </CommandBase.List>
+                    <section className="wayfinder-shortcuts-bar-wrapper">
+                        <div
+                            className="wayfinder-shortcuts-bar"
+                            role="list"
+                            aria-label={strings["cmdk:shortcuts"]}
+                        >
+                            <div className="wayfinder-shortcut" role="listitem">
+                                <RenderHotkey hotkey="Enter" />{" "}
+                                {strings["cmdk:shortcuts:enter:label"]}
+                            </div>
+                            <div className="wayfinder-shortcut" role="listitem">
+                                <RenderHotkey hotkey="ArrowUp" />
+                                {strings["cmdk:shortcuts:combination:or"]}
+                                <RenderHotkey hotkey="ArrowDown" />{" "}
+                                {strings["cmdk:shortcuts:updown:label"]}
+                            </div>
+                            <div className="wayfinder-shortcut" role="listitem">
+                                <RenderHotkey hotkey="Escape" />{" "}
+                                {strings["cmdk:shortcuts:close:label"]}
+                            </div>
+                            <div className="wayfinder-shortcut" role="listitem">
+                                <RenderHotkey hotkey="Mod+K" />{" "}
+                                {strings["cmdk:shortcuts:open:label"]}
+                            </div>
+                        </div>
+                    </section>
+                </CommandBase.Dialog>
+            </StringsProvider>
+        </HotkeysProvider>
     );
 }
 
@@ -278,18 +294,11 @@ const RenderListItem = ({
     const id = React.useId();
     if (item.type === "command") {
         return (
-            <CommandBase.Item
+            <RenderListItem.CommandOrPage
                 id={id}
-                onSelect={onSelect.bind(null, item)}
-                disabled={!item.subtype && !item.action}
-                keywords={item.keywords ?? undefined}
-                value={`${item.name} (id:${id})`}
-            >
-                <div className="wayfinder-item">
-                    <RenderListItem.Icon item={item} />
-                    <div>{item.name}</div>
-                </div>
-            </CommandBase.Item>
+                item={item}
+                onSelect={onSelect}
+            />
         );
     }
 
@@ -311,6 +320,39 @@ const RenderListItem = ({
 
     item satisfies never;
     return null;
+};
+
+RenderListItem.CommandOrPage = ({
+    id,
+    item,
+    onSelect,
+    ...rest
+}: {
+    item: Command | Page;
+    // eslint-disable-next-line no-unused-vars
+    onSelect: (item: ListItem) => void;
+} & Omit<React.ComponentProps<typeof CommandBase.Item>, "onSelect">) => {
+    const {hotkey} = item;
+
+    const onSelectBind = onSelect.bind(null, item);
+    useHotkey(hotkey ?? "Escape", onSelectBind, {enabled: !!hotkey});
+
+    return (
+        <CommandBase.Item
+            id={id}
+            onSelect={onSelect.bind(null, item)}
+            disabled={!item.subtype && !item.action}
+            keywords={item.keywords ?? undefined}
+            value={`${item.name} (id:${id})`}
+            {...rest}
+        >
+            <div className="wayfinder-item">
+                <RenderListItem.Icon item={item} />
+                <div>{item.name}</div>
+            </div>
+            {hotkey && <RenderHotkey hotkey={hotkey} />}
+        </CommandBase.Item>
+    );
 };
 
 RenderListItem.Icon = ({item}: {item: ListItem}) => {
@@ -347,4 +389,21 @@ RenderListItem.Icon = ({item}: {item: ListItem}) => {
     }
 
     return <Icon size={16} aria-hidden={true} />;
+};
+
+const RenderHotkey = ({
+    hotkey,
+    ...rest
+}: {
+    hotkey: RegisterableHotkey;
+} & React.ComponentProps<"kbd">) => {
+    const strings = useStrings();
+    return (
+        <kbd {...rest}>
+            {formatForDisplay(hotkey, {
+                separatorToken: strings["cmdk:shortcuts:combination:and"],
+                useSymbols: false,
+            })}
+        </kbd>
+    );
 };

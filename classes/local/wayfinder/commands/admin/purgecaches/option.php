@@ -20,6 +20,7 @@ use core\lang_string;
 use core\url;
 use local_wayfinder\local\wayfinder\action;
 use local_wayfinder\local\wayfinder\actions\form;
+use local_wayfinder\local\wayfinder\hotkey;
 use local_wayfinder\local\wayfinder\items\command;
 use local_wayfinder\output\renderer;
 
@@ -33,15 +34,19 @@ use local_wayfinder\output\renderer;
 class option extends command {
     /** @var string|null */
     private ?string $cache;
+    /** @var hotkey|null */
+    private ?hotkey $hotkey;
 
     /**
      * Constructor.
      * @param renderer $renderer
      * @param string|null $cache
+     * @param hotkey|null $hotkey
      */
-    public function __construct(renderer $renderer, ?string $cache) {
+    public function __construct(renderer $renderer, ?string $cache, ?hotkey $hotkey = null) {
         parent::__construct($renderer);
         $this->cache = $cache;
+        $this->hotkey = $hotkey;
     }
 
     #[\Override]
@@ -63,6 +68,11 @@ class option extends command {
     #[\Override]
     public function get_keywords(): ?array {
         return $this->cache ? [$this->cache] : null;
+    }
+
+    #[\Override]
+    public function get_hotkey(): ?hotkey {
+        return $this->hotkey;
     }
 
     #[\Override]

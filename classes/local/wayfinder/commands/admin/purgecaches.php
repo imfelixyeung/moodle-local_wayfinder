@@ -20,6 +20,7 @@ use core\context\system;
 use core\lang_string;
 use local_wayfinder\local\wayfinder\action;
 use local_wayfinder\local\wayfinder\actions\submenu;
+use local_wayfinder\local\wayfinder\hotkey;
 use local_wayfinder\local\wayfinder\items\command;
 use local_wayfinder\local\wayfinder\commands\admin\purgecaches\option;
 use local_wayfinder\local\wayfinder\items\page;
@@ -45,11 +46,26 @@ class purgecaches extends command {
 
     #[\Override]
     public function get_action(): ?action {
-        $caches = ['theme', 'courses', 'lang', 'js', 'template', 'filter', 'muc', 'other'];
+        $cacheshotkeys = [
+            'theme' => new hotkey('T', true),
+            'courses' => null,
+            'lang' => new hotkey('L', true),
+            'js' => new hotkey('J', true),
+            'template' => null,
+            'filter' => null,
+            'muc' => null,
+            'other' => new hotkey('O', true),
+        ];
+
+        $cacheitems = [];
+        foreach ($cacheshotkeys as $cache => $hotkey) {
+            $cacheitems[] = new option($this->renderer, $cache, $hotkey);
+        }
+
         $items = [
-            new option($this->renderer, null),
+            new option($this->renderer, null, new hotkey('A', true)),
             new separator($this->renderer),
-            ...array_map(fn(?string $cache) => new option($this->renderer, $cache), $caches),
+            ...$cacheitems,
         ];
         $page = new page($this->renderer, $this->get_name(), $items);
         return new submenu($page);
